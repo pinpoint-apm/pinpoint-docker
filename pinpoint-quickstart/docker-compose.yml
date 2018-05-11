@@ -1,0 +1,51 @@
+version: "3.6"
+
+services:
+  pinpoint-quickstart:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: "pinpoint-quickstart"
+    image: "pinpointdocker/pinpoint-quickstart"
+    ports:
+      - "${APP_PORT:-8080}:8080"
+    volumes:
+      - data-volume:/pinpoint-agent
+    environment:
+      JAVA_OPTS: "-javaagent:/pinpoint-agent/pinpoint-bootstrap-${PINPOINT_VERSION}.jar -Dpinpoint.agentId=${AGENT_ID} -Dpinpoint.applicationName=${APP_NAME}"
+    networks:
+      - pinpoint
+    depends_on:
+      - pinpoint-agent
+
+  pinpoint-agent:
+    build:
+      context: ../pinpoint-agent/
+      dockerfile: Dockerfile
+      args:
+        - PINPOINT_VERSION=${PINPOINT_VERSION}
+
+    container_name: "${PINPOINT_AGENT_NAME}"
+    image: "pinpointdocker/pinpoint-agent:${PINPOINT_VERSION}"
+
+    restart: unless-stopped
+
+    networks:
+      - pinpoint
+    volumes:
+      - data-volume:/pinpoint-agent
+    environment:
+      - COLLECTOR_IP=${COLLECTOR_IP}
+      - COLLECTOR_TCP_PORT=${COLLECTOR_TCP_PORT}
+      - COLLECTOR_STAT_PORT=${COLLECTOR_STAT_PORT}
+      - COLLECTOR_SPAN_PORT=${COLLECTOR_SPAN_PORT}
+      - PROFILER_SAMPLING_RATE=${PROFILER_SAMPLING_RATE}
+      - DEBUG_LEVEL=${AGENT_DEBUG_LEVEL}
+
+volumes:
+  data-volume:
+
+networks:
+  pinpoint:
+    driver: bridge

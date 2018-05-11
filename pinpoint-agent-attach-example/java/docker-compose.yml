@@ -1,0 +1,21 @@
+version: "2.1"
+
+services:
+  java:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - PINPOINT_VERSION=${PINPOINT_VERSION}
+        - AGENT_ID=${AGENT_ID}
+        - APP_NAME=${APP_NAME}
+    container_name: "java"
+    image: "Your Image"
+
+    volumes_from:
+      - container:pinpoint-agent
+
+networks:
+  default:
+    external:
+      name: pinpoint-agent_pinpoint

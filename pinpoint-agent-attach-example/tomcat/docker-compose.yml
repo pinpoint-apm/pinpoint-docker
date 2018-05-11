@@ -1,0 +1,22 @@
+version: "2.1"
+
+services:
+  tomcat:
+    #build if needed
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+    container_name: "tomcat"
+    image: "Your Image"
+    ports:
+      - "${APP_PORT:-8080}:8080"
+    volumes_from:
+      - container:pinpoint-agent
+    environment:
+      JAVA_OPTS: "-javaagent:/pinpoint-agent/pinpoint-bootstrap-${PINPOINT_VERSION}.jar -Dpinpoint.agentId=${AGENT_ID} -Dpinpoint.applicationName=${APP_NAME}"
+    command: catalina.sh run
+
+networks:
+  default:
+    external:
+      name: pinpoint-agent_pinpoint

@@ -1,0 +1,38 @@
+version: "3.6"
+
+servidocker
+docker-compose pull && docker-compose upces:
+  #zookeepers
+  zoo1:
+    image: zookeeper:3.4
+    restart: always
+    hostname: zoo1
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=0.0.0.0:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
+    networks:
+      - pinpoint
+
+  zoo2:
+    image: zookeeper:3.4
+    restart: always
+    hostname: zoo2
+    environment:
+      ZOO_MY_ID: 2
+      ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=0.0.0.0:2888:3888 server.3=zoo3:2888:3888
+    networks:
+      - pinpoint
+
+  zoo3:
+    image: zookeeper:3.4
+    restart: always
+    hostname: zoo3
+    environment:
+      ZOO_MY_ID: 3
+      ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=0.0.0.0:2888:3888
+    networks:
+      - pinpoint
+
+networks:
+  pinpoint:
+    driver: bridge

@@ -1,0 +1,221 @@
+version: "3.6"
+
+services:
+  pinpoint-hbase:
+    build:
+      context: ./pinpoint-hbase/
+      dockerfile: Dockerfile
+      args:
+        - PINPOINT_VERSION=${PINPOINT_VERSION}
+
+    container_name: "${PINPOINT_HBASE_NAME}"
+    image: "pinpointdocker/pinpoint-hbase:${PINPOINT_VERSION}"
+    networks:
+      - pinpoint
+
+    volumes:
+      - ./home/pinpoint/hbase
+      - ./home/pinpoint/zookeeper
+    expose:
+      # zookeeper
+      - "2181"
+      # HBase Master API port
+      - "60000"
+      # HBase Master Web UI
+      - "16010"
+      # Regionserver API port
+      - "60020"
+      # HBase Regionserver web UI
+      - "16030"
+    ports:
+      - "${EXTERNAL_HBASE_PORT:-2181}:2181"
+      - "60000:60000"
+      - "16010:16010"
+      - "60020:60020"
+      - "16030:16030"
+    restart: always
+
+  pinpoint-web:
+    build:
+      context: ./pinpoint-web/
+      dockerfile: Dockerfile
+      args:
+        - PINPOINT_VERSION=${PINPOINT_VERSION}
+
+    container_name: "${PINPOINT_WEB_NAME}"
+    image: "pinpointdocker/pinpoint-web:${PINPOINT_VERSION}"
+
+    depends_on:
+      - pinpoint-hbase
+    restart: always
+    expose:
+      - "8080"
+      - "9997"
+    ports:
+      - "9997:9997"
+      - "${WEB_PAGE_PORT:-8080}:8080"
+    environment:
+      - CLUSTER_ENABLE=${CLUSTER_ENABLE}
+      - CLUSTER_ZOOKEEPER_ADDRESS=${CLUSTER_ZOOKEEPER_ADDRESS}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - ANALYTICS=${ANALYTICS}
+      - HBASE_HOST=${HBASE_HOST}
+      - HBASE_PORT=${HBASE_PORT}
+      - DEBUG_LEVEL=${WEB_DEBUG_LEVEL}
+      - CONFIG_SHOW_APPLICATIONSTAT=${CONFIG_SHOW_APPLICATIONSTAT}
+      - BATCH_ENABLE=${BATCH_ENABLE}
+      - BATCH_SERVER_IP=${BATCH_SERVER_IP}
+      - BATCH_FLINK_SERVER=${BATCH_FLINK_SERVER}
+    networks:
+      - pinpoint
+
+  pinpoint-collector:
+    build:
+      context: ./pinpoint-collector/
+      dockerfile: Dockerfile
+      args:
+        - PINPOINT_VERSION=${PINPOINT_VERSION}
+
+    container_name: "${PINPOINT_COLLECTOR_NAME}"
+    image: "pinpointdocker/pinpoint-collector:${PINPOINT_VERSION}"
+
+    depends_on:
+      - pinpoint-hbase
+    restart: always
+    expose:
+      - "9994"
+      - "9995"
+      - "9996"
+    ports:
+      - "${COLLECTOR_RECEIVER_BASE_PORT:-9994}:9994"
+      - "${COLLECTOR_RECEIVER_STAT_UDP_PORT:-9995}:9995/tcp"
+      - "${COLLECTOR_RECEIVER_SPAN_UDP_PORT:-9996}:9996/tcp"
+      - "${COLLECTOR_RECEIVER_STAT_UDP_PORT:-9995}:9995/udp"
+      - "${COLLECTOR_RECEIVER_SPAN_UDP_PORT:-9996}:9996/udp"
+    networks:
+      - pinpoint
+    environment:
+      - CLUSTER_ENABLE=${CLUSTER_ENABLE}
+      - CLUSTER_ZOOKEEPER_ADDRESS=${CLUSTER_ZOOKEEPER_ADDRESS}
+      - HBASE_HOST=${HBASE_HOST}
+      - HBASE_PORT=${HBASE_PORT}
+      - FLINK_CLUSTER_ENABLE=${FLINK_CLUSTER_ENABLE}
+      - FLINK_CLUSTER_ZOOKEEPER_ADDRESS=${FLINK_CLUSTER_ZOOKEEPER_ADDRESS}
+      - DEBUG_LEVEL=${COLLECTOR_DEBUG_LEVEL}
+
+  pinpoint-quickstart:
+    build:
+      context: ./pinpoint-quickstart/
+      dockerfile: Dockerfile
+
+    container_name: "pinpoint-quickstart"
+    image: "pinpointdocker/pinpoint-quickstart"
+    ports:
+      - "${APP_PORT:-8080}:8080"
+    volumes:
+      - data-volume:/pinpoint-agent
+    environment:
+      JAVA_OPTS: "-javaagent:/pinpoint-agent/pinpoint-bootstrap-${PINPOINT_VERSION}.jar -Dpinpoint.agentId=${AGENT_ID} -Dpinpoint.applicationName=${APP_NAME}"
+    networks:
+      - pinpoint
+    depends_on:
+      - pinpoint-agent
+
+  pinpoint-agent:
+    build:
+      context: ./pinpoint-agent/
+      dockerfile: Dockerfile
+      args:
+        - PINPOINT_VERSION=${PINPOINT_VERSION}
+
+    container_name: "${PINPOINT_AGENT_NAME}"
+    image: "pinpointdocker/pinpoint-agent:${PINPOINT_VERSION}"
+
+    restart: unless-stopped
+
+    networks:
+      - pinpoint
+    volumes:
+      - data-volume:/pinpoint-agent
+    environment:
+      - COLLECTOR_IP=${COLLECTOR_IP}
+      - COLLECTOR_TCP_PORT=${COLLECTOR_TCP_PORT}
+      - COLLECTOR_STAT_PORT=${COLLECTOR_STAT_PORT}
+      - COLLECTOR_SPAN_PORT=${COLLECTOR_SPAN_PORT}
+      - PROFILER_SAMPLING_RATE=${PROFILER_SAMPLING_RATE}
+      - DEBUG_LEVEL=${AGENT_DEBUG_LEVEL}
+    depends_on:
+      - pinpoint-collector
+
+  #zookeepers
+  zoo1:
+    image: zookeeper:3.4
+    restart: always
+    hostname: zoo1
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=0.0.0.0:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
+    networks:
+      - pinpoint
+
+  zoo2:
+    image: zookeeper:3.4
+    restart: always
+    hostname: zoo2
+    environment:
+      ZOO_MY_ID: 2
+      ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=0.0.0.0:2888:3888 server.3=zoo3:2888:3888
+    networks:
+      - pinpoint
+
+  zoo3:
+    image: zookeeper:3.4
+    restart: always
+    hostname: zoo3
+    environment:
+      ZOO_MY_ID: 3
+      ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=0.0.0.0:2888:3888
+    networks:
+      - pinpoint
+
+  ##flink
+  jobmanager:
+    container_name: "${PINPOINT_FLINK_NAME}-jobmanager"
+    image: flink:1.3.1
+    expose:
+      - "6123"
+    ports:
+      - "${FLINK_WEB_PORT:-8081}:8081"
+    command: jobmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+    networks:
+      - pinpoint
+
+  taskmanager:
+    container_name: "${PINPOINT_FLINK_NAME}-taskmanager"
+    image: flink:1.3.1
+    expose:
+      - "6121"
+      - "6122"
+      - "19994"
+    ports:
+      - "6121:6121"
+      - "6122:6122"
+      - "19994:19994"
+    depends_on:
+      - jobmanager
+    command: taskmanager
+    links:
+      - "jobmanager:jobmanager"
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+    networks:
+      - pinpoint
+
+volumes:
+  data-volume:
+
+networks:
+  pinpoint:
+    driver: bridge

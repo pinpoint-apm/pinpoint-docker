@@ -1,0 +1,37 @@
+version: "3.6"
+
+#pinpoint-agent image will not usually be used alone
+services:
+  pinpoint-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - PINPOINT_VERSION=${PINPOINT_VERSION}
+
+    container_name: "${PINPOINT_AGENT_NAME}"
+    image: "pinpointdocker/pinpoint-agent:${PINPOINT_VERSION}"
+
+    restart: unless-stopped
+
+    volumes:
+      - pinpoint-agent
+    environment:
+      - COLLECTOR_IP=${COLLECTOR_IP}
+      - COLLECTOR_TCP_PORT=${COLLECTOR_TCP_PORT}
+      - COLLECTOR_STAT_PORT=${COLLECTOR_STAT_PORT}
+      - COLLECTOR_SPAN_PORT=${COLLECTOR_SPAN_PORT}
+      - PROFILER_SAMPLING_RATE=${PROFILER_SAMPLING_RATE}
+      - DEBUG_LEVEL=${AGENT_DEBUG_LEVEL}
+    networks:
+      - pinpoint
+
+#networks:
+#  default:
+#    external:
+#      name: pinpoint
+
+networks:
+  pinpoint:
+    driver: bridge
+

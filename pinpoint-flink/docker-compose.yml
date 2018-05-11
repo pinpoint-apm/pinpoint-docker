@@ -1,0 +1,45 @@
+version: "3.6"
+##
+#to use this separately will require pinpoint-flink-job-{version}.jar built
+#from pinpoint-flink module with correct properties under hbase.properties, pinpoint-flink.properties
+#sample configs used to build pinpoint-flink/build/pinpoint-flink-job-1.7.2.jar is under build folder
+##
+services:
+  ##flink
+  jobmanager:
+    container_name: "${PINPOINT_FLINK_NAME}-jobmanager"
+    image: flink:1.3.1
+    expose:
+      - "6123"
+    ports:
+      - "${FLINK_WEB_PORT:-8081}:8081"
+    command: jobmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+    networks:
+      - pinpoint
+
+  taskmanager:
+    container_name: "${PINPOINT_FLINK_NAME}-taskmanager"
+    image: flink:1.3.1
+    expose:
+      - "6121"
+      - "6122"
+      - "19994"
+    ports:
+      - "6121:6121"
+      - "6122:6122"
+      - "19994:19994"
+    depends_on:
+      - jobmanager
+    command: taskmanager
+    links:
+      - "jobmanager:jobmanager"
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+    networks:
+      - pinpoint
+
+networks:
+  pinpoint:
+    driver: bridge

@@ -1,0 +1,33 @@
+version: "3.6"
+
+services:
+  pinpoint-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - PINPOINT_VERSION=${PINPOINT_VERSION}
+
+    container_name: "${PINPOINT_WEB_NAME}"
+    image: "pinpointdocker/pinpoint-web:${PINPOINT_VERSION}"
+
+    restart: always
+    expose:
+      - "8080"
+      - "9997"
+    ports:
+      - "9997:9997"
+      - "${WEB_PAGE_PORT:-8080}:8080"
+    environment:
+      - CLUSTER_ENABLE=${CLUSTER_ENABLE}
+      - CLUSTER_ZOOKEEPER_ADDRESS=${CLUSTER_ZOOKEEPER_ADDRESS}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - ANALYTICS=${ANALYTICS}
+      - HBASE_HOST=${HBASE_HOST}
+      - HBASE_PORT=${HBASE_PORT}
+      - DEBUG_LEVEL=${WEB_DEBUG_LEVEL}
+      - CONFIG_SHOW_APPLICATIONSTAT=${CONFIG_SHOW_APPLICATIONSTAT}
+      - BATCH_ENABLE=${BATCH_ENABLE}
+      - BATCH_SERVER_IP=${BATCH_SERVER_IP}
+      - BATCH_FLINK_SERVER=${BATCH_FLINK_SERVER}
+
