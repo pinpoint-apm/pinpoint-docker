@@ -111,7 +111,7 @@ Contributions on the pinpoint-docker image is also always welcome.
 
 ## License
 Pinpoint is licensed under the Apache License, Version 2.0.
-See [LICENSE](LICENSE) for full license text.
+See [LICENSE](https://github.com/naver/pinpoint/blob/master/LICENSE) for full license text.
 
 ```
 Copyright 2018 NAVER Corp.

@@ -1,7 +1,7 @@
 
-## Pinpoint Web
+## Pinpoint Hbase
 
-This Docker image contains the Pinpoint Web component of the Pinpoint application monitoring system.
+This Docker image contains the Pinpoint Hbase component of the Pinpoint application monitoring system.
 
 ## Supported Tags
 
