@@ -2,7 +2,7 @@ version: "3.6"
 ##
 #to use this separately will require pinpoint-flink-job-{version}.jar built
 #from pinpoint-flink module with correct properties under hbase.properties, pinpoint-flink.properties
-#sample configs used to build pinpoint-flink/build/pinpoint-flink-job-1.7.2.jar is under build folder
+#sample configs used to build pinpoint-flink/build/pinpoint-flink-job-{version}.jar is under build folder
 ##
 services:
   ##flink

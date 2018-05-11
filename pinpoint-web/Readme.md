@@ -7,6 +7,7 @@ This Docker image contains the Pinpoint Web component of the Pinpoint applicatio
 
  - 1.7.3
  - 1.7.2
+ 
 Please see the [Pinpoint-Docker GitHub repository](https://github.com/naver/pinpoint-docker) for further information on how to run, configure and build this image.
 
 ## Any Issues or Suggestions?

@@ -11,6 +11,7 @@ Official git repository of Dockerized components of the [Pinpoint Application Mo
 It supports and helps you understand your application in a glance and allow you to build world-class, high-quality software.
 
 ## Supported Tags
+
  - 1.7.3
  - 1.7.2
 
