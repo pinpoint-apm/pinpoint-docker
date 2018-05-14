@@ -3,7 +3,8 @@
 
 # Pinpoint-Docker for Pinpoint
 
-Official git repository of Dockerized components of the [Pinpoint Application Monitoring](http://naver.github.io/pinpoint/).
+Official git repository of Dockerized components of the [Pinpoint Application Monitoring](http://naver.github.io/pinpoint/).  
+Installing Pinpoint with these docker files will take approximately 10min. to check out the features of pinpoint.
 
 ## What is Pinpoint
 
@@ -71,6 +72,15 @@ If you are not familiar with Pinpoint concept, please read: [Overview](http://na
 Running Pinpoint-Agent docker-compose separately, Examples are [here](https://github.com/naver/pinpoint-docker/tree/master/pinpoint-agent-attach-example).  
 Otherwise, you can check how [Pinpoint-Quickstart](https://github.com/naver/pinpoint-docker/blob/master/docker-compose.yml) is attached to Pinpoint-Agent with docker-compose.
 
+We'll try to create more examples along the way.
+If anyone who can share their dockerfile, it's always welcome.
+
+## Distributed System
+
+Until now, every components are in one docker, single-node approach, which is excellent for test and development.
+It provides an easy way to prototype new ideas and use cases, as well as try out new functionality and the latest Pinpoint releases.
+It’s not intended nor supported for production use.
+
 You can use `docker-compose` and `.env` files under each folder to install the modules separately into several servers.
 If containers are separated, ip configurations in `.env` must be changed within. 
 
@@ -78,9 +88,6 @@ For example, if you want your application running from a docker and rest of Pinp
 You can remove *pinpoint-agent* and *pinpoint-quickstart* from docker-compose.yml and run to establish all necessary component of pinpoint.
 And create another docker-compose.yml just like one under pinpoint-quickstart folder to run your application.
 Finally, since agent needs to acknowledge the collector ip. collector ip needs to be changed in .env.
-
-We'll try to create more examples along the way.
-If anyone who can share their dockerfile, it's always welcome.
 
 ## Configurations
 
