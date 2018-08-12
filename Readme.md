@@ -27,6 +27,7 @@ git clone https://github.com/naver/pinpoint-docker.git
 cd Pinpoint-Docker
 docker-compose pull && docker-compose up -d
 ```
+You can also just build the image with `docker-compose up -d` command without pulling the image. But you can reduce the time to 1/3 by just downloading them.
 
 This will install and run all services required to run all features in Pinpoint in docker containers joined with same network.
  - Pinpoint-Web Server
@@ -40,6 +41,8 @@ This may take several minutes to download all necessary images.
 
 You can modify `QuickStart` application part with your application to start monitoring.  
 (see [`Monitoring YOUR Application`](https://github.com/naver/pinpoint-docker#monitoring-your-application) part for further details).
+
+### Flink configuration
 
 After all containers are started and ready to go. There is one more thing to do to use all existing features in Pinpoint.
 It's not mandatory, but to use all the features and since it's a simple task, let's take care of it.
