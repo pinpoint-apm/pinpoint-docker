@@ -18,15 +18,16 @@ It supports and helps you understand your application in a glance and allow you 
 
 ## How to install Pinpoint?
 
-You can easily bring up an entire Dockerized Pinpoint environment by using [Docker Compose](https://docs.docker.com/compose/) with any of the provided `docker-compose.yml` files  as below.  
+You can easily bring up an entire Dockerized Pinpoint(latest release) environment by using [Docker Compose](https://docs.docker.com/compose/) with any of the provided `docker-compose.yml` files  as below.  
 With `docker-compose.yml` under *Pinpoint-Docker* folder brings up all the environment attached with Pinpoint-QuickStart(sample app).
-To monitor your agent see [configuration part](#Configuration) for further details.  
+To monitor your agent see [configuration part](#configurations) for further details.  
 
 ```
 git clone https://github.com/naver/pinpoint-docker.git
 cd Pinpoint-Docker
 docker-compose pull && docker-compose up -d
 ```
+If you'd like to bring up the previous release. Try with docker-compose file from other tags. 
 You can also just build the image with `docker-compose up -d` command without pulling the image. But you can reduce the time to 1/3 by just downloading them.
 
 This will install and run all services required to run all features in Pinpoint in docker containers joined with same network.
@@ -40,7 +41,7 @@ This will install and run all services required to run all features in Pinpoint 
 This may take several minutes to download all necessary images.
 
 You can modify `QuickStart` application part with your application to start monitoring.  
-(see [`Monitoring YOUR Application`](https://github.com/naver/pinpoint-docker#monitoring-your-application) part for further details).
+(see [`Monitoring YOUR Application`](#monitoring-your-application) part for further details).
 
 ### Flink configuration
 
@@ -104,7 +105,7 @@ Pinpoint-Zookeeper is just an example of using zookeeper image. You can modify d
 
 For more specific details on what the values represents in *.env* file. Please check [Pinpoint Github Repository](https://github.com/naver/pinpoint) or
 [Pinpoint Web properties](https://github.com/naver/pinpoint/blob/master/web/src/main/resources/pinpoint-web.properties), [Pinpoint Collector properties](https://github.com/naver/pinpoint/blob/master/collector/src/main/resources/pinpoint-collector.properties), [Pinpoint Agent configuration](https://github.com/naver/pinpoint/blob/master/agent/src/main/resources-release/pinpoint.config).  
-Please note that only essential configuration options are adopted to pinpoint-docker. 
+Please note that only essential configuration options are adopted to pinpoint-docker(docker-compose). 
  
 ## logs 
  
