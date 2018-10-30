@@ -41,10 +41,11 @@ This will install and run all services required to run all features in Pinpoint 
  - Pinpoint-QuickStart(a sample application)  
 This may take several minutes to download all necessary images.
 
-You can modify `QuickStart` application part with your application to start monitoring.  
-(see [`Monitoring YOUR Application`](#monitoring-your-application) part for further details).
+You can replace `QuickStart` application part with your application to start monitoring.  
+ - check [`Testing QuickStart application`](#testing-quickstart-application) for a quick demo of pinpoint
+ - check [`Monitoring YOUR Application`](#monitoring-your-application) part for further details
 
-### Flink configuration
+### Flink configuration (optional)
 
 After all containers are started and ready to go. There is one more thing to do to use all existing features in Pinpoint.
 It's not mandatory, but to use all the features and since it's a simple task, let's take care of it.
@@ -60,7 +61,9 @@ Submit the jar file with *com.navercorp.pinpoint.flink.StatStreamingVer2Job* in 
 
 ![Pinpoint](https://github.com/naver/pinpoint-docker/blob/master/docs/Pinpoint-Flink%20upload.png)
  
-Now you are ready to monitor the sample application(Pinpoint-QuickStart) provided.
+### Testing QuickStart application
+ 
+Now you are ready to monitor the sample application(Pinpoint-QuickStart [port 8000](http://localhost:8000)) provided.
 If you can't find any connected application from Pinpoint-Web's first page([port 8079](http://localhost:8079) as default), don't panic and wait for a while.
 It will take some time for Pinpoint to retrieve the application's information when running for the first time.
 
