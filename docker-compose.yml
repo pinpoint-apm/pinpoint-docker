@@ -35,6 +35,30 @@ services:
       - "16030:16030"
     restart: always
 
+  pinpoint-mysql:
+    build:
+      context: ./pinpoint-mysql/
+      dockerfile: Dockerfile
+      args:
+        - PINPOINT_VERSION=${PINPOINT_VERSION}
+    
+    container_name: pinpoint-mysql
+    restart: always
+    image: pinpointdocker/pinpoint-mysql:${PINPOINT_VERSION}
+    hostname: pinpoint-mysql
+    ports:
+      - "13306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_DATABASE: pinpoint
+
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - pinpoint
+
   pinpoint-web:
     build:
       context: ./pinpoint-web/
@@ -47,6 +71,7 @@ services:
 
     depends_on:
       - pinpoint-hbase
+      - pinpoint-mysql
     restart: always
     expose:
       - "8080"
@@ -66,6 +91,23 @@ services:
       - BATCH_ENABLE=${BATCH_ENABLE}
       - BATCH_SERVER_IP=${BATCH_SERVER_IP}
       - BATCH_FLINK_SERVER=${BATCH_FLINK_SERVER}
+      - JDBC_DRIVER=com.mysql.jdbc.Driver
+      - JDBC_URL=jdbc:mysql://pinpoint-mysql:3306/pinpoint?characterEncoding=UTF-8
+      - JDBC_USERNAME=admin
+      - JDBC_PASSWORD=admin
+      - MAIL_HOST=stmp.test.com
+      - MAIL_PORT=123
+      - MAIL_USERNAME=user
+      - MAIL_PASSWORD=pass
+#      - MAIL_PROPERTIES_MAIL_TRANSPORT_PROTOCOL=smtp
+      - MAIL_PROPERTIES_MAIL_SMTP_AUTH='true'
+      - MAIL_PROPERTIES_MAIL_SMTP_PORT=587
+#      - MAIL_PROPERTIES_MAIL_SMTP_FROM=test@example.com
+      - MAIL_PROPERTIES_MAIL_STARTTLS_ENABLE='true'
+#      - MAIL_PROPERTIES_MAIL_STARTTLS_REQUIRED='true'
+#      - MAIL_PROPERTIES_MAIL_DEBUG='true'
+    links:
+      - "pinpoint-mysql:pinpoint-mysql"
     networks:
       - pinpoint
 
@@ -215,6 +257,7 @@ services:
 
 volumes:
   data-volume:
+  mysql_data:
 
 networks:
   pinpoint:
