@@ -38,12 +38,21 @@ This will install and run all services required to run all features in Pinpoint 
  - Pinpoint-Flink
  - Pinpoint-Zookeeper
  - Pinpoint-Hbase
- - Pinpoint-QuickStart(a sample application)  
+ - Pinpoint-QuickStart(a sample application)
+ - Pinpoint-Mysql
 This may take several minutes to download all necessary images.
 
 You can replace `QuickStart` application part with your application to start monitoring.  
  - check [`Testing QuickStart application`](#testing-quickstart-application) for a quick demo of pinpoint
  - check [`Monitoring YOUR Application`](#monitoring-your-application) part for further details
+
+### Mysql (optional)
+
+The Pinpoint-Mysql server is running on port 13306 and contains the data structure used to register users, groups, and alerts to be sent.
+
+To send email alerts, you must make BATCH_ENABLE=true and change the other mail-related environment variables (MAIL_HOST, MAIL_PORT, MAIL_USERNAME, MAIL_PASSWORD, MAIL_PROPERTIES_MAIL_SMTP_FROM, ...) to the Pinpoint-Web server in *.env* file.
+
+For more information see [Setting Alarm](http://naver.github.io/pinpoint/alarm.html) in Pinpoint documentation.
 
 ### Flink configuration (optional)
 
