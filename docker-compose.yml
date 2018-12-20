@@ -35,6 +35,30 @@ services:
       - "16030:16030"
     restart: always
 
+  pinpoint-mysql:
+    build:
+      context: ./pinpoint-mysql/
+      dockerfile: Dockerfile
+      args:
+        - PINPOINT_VERSION=${PINPOINT_VERSION}
+    
+    container_name: pinpoint-mysql
+    restart: always
+    image: pinpointdocker/pinpoint-mysql:${PINPOINT_VERSION}
+    hostname: pinpoint-mysql
+    ports:
+      - "13306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - pinpoint
+
   pinpoint-web:
     build:
       context: ./pinpoint-web/
@@ -47,6 +71,7 @@ services:
 
     depends_on:
       - pinpoint-hbase
+      - pinpoint-mysql
     restart: always
     expose:
       - "8080"
@@ -66,6 +91,23 @@ services:
       - BATCH_ENABLE=${BATCH_ENABLE}
       - BATCH_SERVER_IP=${BATCH_SERVER_IP}
       - BATCH_FLINK_SERVER=${BATCH_FLINK_SERVER}
+      - JDBC_DRIVER=${JDBC_DRIVER}
+      - JDBC_URL=${JDBC_URL}
+      - JDBC_USERNAME=${JDBC_USERNAME}
+      - JDBC_PASSWORD=${JDBC_PASSWORD}
+      - MAIL_HOST=${MAIL_HOST}
+      - MAIL_PORT=${MAIL_PORT}
+      - MAIL_USERNAME=${MAIL_USERNAME}
+      - MAIL_PASSWORD=${MAIL_PASSWORD}
+      - MAIL_PROPERTIES_MAIL_TRANSPORT_PROTOCOL=${MAIL_PROPERTIES_MAIL_TRANSPORT_PROTOCOL}
+      - MAIL_PROPERTIES_MAIL_SMTP_AUTH=${MAIL_PROPERTIES_MAIL_SMTP_AUTH}
+      - MAIL_PROPERTIES_MAIL_SMTP_PORT=${MAIL_PROPERTIES_MAIL_SMTP_PORT}
+      - MAIL_PROPERTIES_MAIL_SMTP_FROM=${MAIL_PROPERTIES_MAIL_SMTP_FROM}
+      - MAIL_PROPERTIES_MAIL_STARTTLS_ENABLE=${MAIL_PROPERTIES_MAIL_STARTTLS_ENABLE}
+      - MAIL_PROPERTIES_MAIL_STARTTLS_REQUIRED=${MAIL_PROPERTIES_MAIL_STARTTLS_REQUIRED}
+      - MAIL_PROPERTIES_MAIL_DEBUG=${MAIL_PROPERTIES_MAIL_DEBUG}
+    links:
+      - "pinpoint-mysql:pinpoint-mysql"
     networks:
       - pinpoint
 
@@ -215,6 +257,7 @@ services:
 
 volumes:
   data-volume:
+  mysql_data:
 
 networks:
   pinpoint:
