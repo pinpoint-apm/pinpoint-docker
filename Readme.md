@@ -38,12 +38,12 @@ You can also just build the image with `docker-compose up -d` command without pu
 This will install and run all services required to run all features in Pinpoint in docker containers joined with same network.
  - Pinpoint-Web Server
  - Pinpoint-Collector
- - Pinpoint-Agent(ready to be used)
- - Pinpoint-Flink
+ - Pinpoint-Agent
+ - Pinpoint-Flink(just for certain feature)
  - Pinpoint-Zookeeper
  - Pinpoint-Hbase
  - Pinpoint-QuickStart(a sample application)
- - Pinpoint-Mysql
+ - Pinpoint-Mysql(just for certain feature)
 This may take several minutes to download all necessary images.
 
 You can replace `QuickStart` application part with your application to start monitoring.  
@@ -52,13 +52,15 @@ You can replace `QuickStart` application part with your application to start mon
 
 ### Mysql (optional)
 
-The Pinpoint-Mysql server is running on port 13306 and contains the data structure used to register users, groups, and alerts to be sent.
+The Pinpoint-Mysql is necessary to use 'Alarm' feature. It's server is running on port 13306 and contains the data structure used to register users, groups, and alerts to be sent.
 
 To send email alerts, you must make BATCH_ENABLE=true and change the other mail-related environment variables (MAIL_HOST, MAIL_PORT, MAIL_USERNAME, MAIL_PASSWORD, MAIL_PROPERTIES_MAIL_SMTP_FROM, ...) to the Pinpoint-Web server in *.env* file.
 
-For more information see [Setting Alarm](http://naver.github.io/pinpoint/alarm.html) in Pinpoint documentation.
+For more information checkout [Setting Alarm](http://naver.github.io/pinpoint/alarm.html) in Pinpoint documentation.
 
 ### Flink configuration (optional)
+
+The Pinpoint-Flink is necessary to use ['Application Inspector'](http://naver.github.io/pinpoint/applicationinspector.html) feature. 
 
 After all containers are started and ready to go. There is one more thing to do to use all existing features in Pinpoint.
 It's not mandatory, but to use all the features and since it's a simple task, let's take care of it.
