@@ -17,6 +17,10 @@ It supports and helps you understand your application in a glance and allow you 
  - 1.7.3
  - 1.7.2
 
+## Requirements
+
+- [docker 18.02.0+](https://docs.docker.com/compose/compose-file/)
+
 ## How to install Pinpoint?
 
 You can easily bring up an entire Dockerized Pinpoint(latest release) environment by using [Docker Compose](https://docs.docker.com/compose/) with any of the provided `docker-compose.yml` files  as below.  
@@ -25,7 +29,7 @@ To monitor your agent see [configuration part](#configurations) for further deta
 
 ```
 git clone https://github.com/naver/pinpoint-docker.git
-cd Pinpoint-Docker
+cd pinpoint-docker
 docker-compose pull && docker-compose up -d
 ```
 If you'd like to bring up the previous release. Try with docker-compose file from other tags. 
