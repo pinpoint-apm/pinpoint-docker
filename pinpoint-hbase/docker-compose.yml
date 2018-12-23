@@ -12,8 +12,8 @@ services:
     image: "pinpointdocker/pinpoint-hbase:${PINPOINT_VERSION}"
 
     volumes:
-      - ./home/pinpoint/hbase
-      - ./home/pinpoint/zookeeper
+      - /home/pinpoint/hbase
+      - /home/pinpoint/zookeeper
     expose:
       # zookeeper
       - "2181"

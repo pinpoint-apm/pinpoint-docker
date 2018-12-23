@@ -14,8 +14,8 @@ services:
       - pinpoint
 
     volumes:
-      - ./home/pinpoint/hbase
-      - ./home/pinpoint/zookeeper
+      - /home/pinpoint/hbase
+      - /home/pinpoint/zookeeper
     expose:
       # zookeeper
       - "2181"
