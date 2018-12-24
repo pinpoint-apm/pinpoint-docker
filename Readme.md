@@ -39,18 +39,18 @@ This will install and run all services required to run all features in Pinpoint 
  - Pinpoint-Web Server
  - Pinpoint-Collector
  - Pinpoint-Agent
- - Pinpoint-Flink(just for certain feature)
+ - Pinpoint-Flink(to support certain feature)
  - Pinpoint-Zookeeper
  - Pinpoint-Hbase
- - Pinpoint-QuickStart(a sample application)
- - Pinpoint-Mysql(just for certain feature)
+ - Pinpoint-QuickStart(a sample application, 1.8.1+)
+ - Pinpoint-Mysql(to support certain feature)
 This may take several minutes to download all necessary images.
 
 You can replace `QuickStart` application part with your application to start monitoring.  
  - check [`Testing QuickStart application`](#testing-quickstart-application) for a quick demo of pinpoint
  - check [`Monitoring YOUR Application`](#monitoring-your-application) part for further details
 
-### Mysql (optional)
+### Mysql (optional, 1.8.1+)
 
 The Pinpoint-Mysql is necessary to use 'Alarm' feature. It's server is running on port 13306 and contains the data structure used to register users, groups, and alerts to be sent.
 
