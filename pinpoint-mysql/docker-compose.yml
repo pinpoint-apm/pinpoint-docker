@@ -1,0 +1,25 @@
+version: "3.6"
+
+services:
+  pinpoint-mysql:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - PINPOINT_VERSION=${PINPOINT_VERSION}
+
+    container_name: pinpoint-mysql
+    restart: always
+    image: "pinpointdocker/pinpoint-mysql:${PINPOINT_VERSION}"
+
+    hostname: pinpoint-mysql
+    ports:
+      - "13306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+
+    volumes:
+      - ./var/lib/mysql
