@@ -13,9 +13,6 @@ RUN chmod a+x /usr/local/bin/start-web.sh \
     && rm -rf /usr/local/tomcat/webapps \
     && mkdir -p /usr/local/tomcat/webapps \
     && unzip pinpoint-web.war -d /usr/local/tomcat/webapps/ROOT \
-    && rm -rf pinpoint-web.war \
-    && curl -SL https://maven.java.net/content/repositories/releases/com/sun/mail/javax.mail/1.5.2/javax.mail-1.5.2.jar -o /usr/local/tomcat/webapps/ROOT/WEB-INF/lib/javax.mail-1.5.2.jar \
-    && unzip /assets/mail.zip -d /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/ \
-    && rm -rf /assets/mail.zip
+    && rm -rf pinpoint-web.war
 
 ENTRYPOINT ["/usr/local/bin/start-web.sh"]
