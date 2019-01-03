@@ -44,7 +44,7 @@ services:
     
     container_name: pinpoint-mysql
     restart: always
-    image: pinpointdocker/pinpoint-mysql:${PINPOINT_VERSION}
+#    image: "pinpointdocker/pinpoint-mysql:${PINPOINT_VERSION}"
     hostname: pinpoint-mysql
     ports:
       - "13306:3306"
