@@ -13,6 +13,7 @@ It supports and helps you understand your application in a glance and allow you 
 
 ## Supported Tags
 
+ - 1.8.1
  - 1.8.0
  - 1.7.3
  - 1.7.2
@@ -32,8 +33,16 @@ git clone https://github.com/naver/pinpoint-docker.git
 cd pinpoint-docker
 docker-compose pull && docker-compose up -d
 ```
-If you'd like to bring up the previous release. Try with docker-compose file from other tags. 
-You can also just build the image with `docker-compose up -d` command without pulling the image. But you can reduce the time to 1/3 by just downloading them.
+If you'd like to bring up a previous release. Try with docker-compose file from other tags. 
+
+```
+git clone https://github.com/naver/pinpoint-docker.git
+git checkout {tag}
+cd pinpoint-docker
+docker-compose pull && docker-compose up -d
+```
+
+You can also build the image with `docker-compose up -d` command without pulling the image. But you can reduce the time to 1/3 by just downloading them.
 
 This will install and run all services required to run all features in Pinpoint in docker containers joined with same network.
  - Pinpoint-Web Server
