@@ -2,7 +2,7 @@ FROM java:8-jdk
 
 LABEL maintainer="Roy Kim <roy.kim@navercorp.com>"
 
-ARG PINPOINT_VERSION=${PINPOINT_VERSION:-1.8.1}
+ARG PINPOINT_VERSION=${PINPOINT_VERSION:-1.8.2}
 
 ENV HBASE_REPOSITORY=http://apache.mirrors.pair.com/hbase
 ENV HBASE_SUB_REPOSITORY=http://archive.apache.org/dist/hbase
