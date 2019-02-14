@@ -9,6 +9,7 @@ sed -i "/flink.cluster.zookeeper.address=/ s/=.*/=${FLINK_CLUSTER_ZOOKEEPER_ADDR
 
 sed -i "/hbase.client.host=/ s/=.*/=${HBASE_HOST}/" /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/hbase.properties
 sed -i "/hbase.client.port=/ s/=.*/=${HBASE_PORT}/" /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/hbase.properties
+sed -i "/hbase.zookeeper.znode.parent=/ s/=.*/=\\${HBASE_ZNODE_PARENT}/" /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/hbase.properties
 
 sed -i "/level value=/ s/=.*/=\"${DEBUG_LEVEL}\"\/>/g" /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/log4j.xml
 

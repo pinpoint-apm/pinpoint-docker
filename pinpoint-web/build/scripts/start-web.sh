@@ -11,6 +11,7 @@ sed -i "/config.show.applicationStat=/ s/=.*/=${CONFIG_SHOW_APPLICATIONSTAT}/" /
 
 sed -i "/hbase.client.host=/ s/=.*/=${HBASE_HOST}/" /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/hbase.properties
 sed -i "/hbase.client.port=/ s/=.*/=${HBASE_PORT}/" /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/hbase.properties
+sed -i "/hbase.zookeeper.znode.parent=/ s/=.*/=\\${HBASE_ZNODE_PARENT}/" /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/hbase.properties
 
 sed -i "/batch.enable=/ s/=.*/=${BATCH_ENABLE}/" /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/batch.properties
 sed -i "/batch.server.ip=/ s/=.*/=${BATCH_SERVER_IP}/" /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/batch.properties
