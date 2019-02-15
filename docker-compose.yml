@@ -14,8 +14,8 @@ services:
       - pinpoint
 
     volumes:
-      - ./home/pinpoint/hbase
-      - ./home/pinpoint/zookeeper
+      - /home/pinpoint/hbase
+      - /home/pinpoint/zookeeper
     expose:
       # zookeeper
       - "2181"
@@ -44,7 +44,7 @@ services:
     
     container_name: pinpoint-mysql
     restart: always
-#    image: "pinpointdocker/pinpoint-mysql:${PINPOINT_VERSION}"
+    image: "pinpointdocker/pinpoint-mysql:${PINPOINT_VERSION}"
     hostname: pinpoint-mysql
     ports:
       - "13306:3306"
