@@ -73,8 +73,8 @@ For more information checkout [Setting Alarm](http://naver.github.io/pinpoint/al
 
 The Pinpoint-Flink is necessary to use ['Application Inspector'](http://naver.github.io/pinpoint/applicationinspector.html) feature. 
 
-After all containers are started and ready to go. There is one more thing to do to use all existing features in Pinpoint.
-It's not mandatory, but to use all the features and since it's a simple task, let's take care of it.
+After all containers are started and ready to go. There is one more thing to do to use this features in Pinpoint.
+This feature is not mandatory, but since enabling this is a simple task, let's take care of it.
 
 Register a `job` on to pinpoint-flink server.  
 You can build the `job` from the [open-source of Pinpoint](https://github.com/naver/pinpoint), additional guide is [here](https://github.com/naver/pinpoint/blob/master/doc/application-inspector.md#application-inspector).   
