@@ -78,8 +78,7 @@ This feature is not mandatory, but since enabling this is a simple task, let's t
 
 Register a `job` on to pinpoint-flink server.  
 You can build the `job` from the [open-source of Pinpoint](https://github.com/naver/pinpoint), additional guide is [here](https://github.com/naver/pinpoint/blob/master/doc/application-inspector.md#application-inspector).   
-or  
-you can simply upload pre-built jar file under pinpoint-flink/build/pinpoint-flink-job-{pinpoint-version}.jar (beware of the version, it should matched with *PINPOINT_VERSION* in .env file)  
+  
 If anyone have solution to put the job file into flink image without doing manually, please let us know.
 
 Pinpoint-Flink server is running on [port 8081](http://localhost:8081/#/submit). From `submit new job` menu
