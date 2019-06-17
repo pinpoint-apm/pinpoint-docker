@@ -5,6 +5,7 @@ This Docker image contains the Pinpoint Web component of the Pinpoint applicatio
 
 ## Supported Tags
 
+ - 1.8.4
  - 1.8.3
  - 1.8.2
  - 1.8.1
