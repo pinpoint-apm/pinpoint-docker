@@ -1,0 +1,18 @@
+FROM php:7.2-fpm
+
+COPY sources.list /etc/apt/sources.list
+RUN apt update \
+    && apt install curl libcurl4-gnutls-dev git zlib1g-dev automake bison flex g++ git libtool make pkg-config openssl libssl-dev  -y \
+    && docker-php-ext-install zip pdo_mysql \
+    # install php extension
+		&& git clone https://github.com/naver/pinpoint-c-agent.git \
+		&& cd pinpoint-c-agent/pinpoint_php \
+		&& ./Build.sh \
+		&& export LD_LIBRARY_PATH=$PWD/../thirdlibray/var/:$LD_LIBRARY_PATH \
+		&& make install
+
+RUN curl -Ss https://getcomposer.org/installer | php -- --install-dir=/bin --filename=composer
+WORKDIR /var/www/html/project
+RUN cd ../ && composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/ \
+    && composer create-project laravel/laravel project \
+    && cd project && php artisan key:generate
