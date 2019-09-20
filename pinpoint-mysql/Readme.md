@@ -5,6 +5,7 @@ This Docker image contains the Pinpoint Mysql component of the Pinpoint applicat
 
 ## Supported Tags
  
+ - 1.8.5
  - 1.8.4
  - 1.8.3
  - 1.8.2

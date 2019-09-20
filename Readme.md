@@ -13,6 +13,7 @@ It supports and helps you understand your application in a glance and allow you 
 
 ## Supported Tags
 
+ - 1.8.5 
  - 1.8.4
  - 1.8.3
  - 1.8.2
