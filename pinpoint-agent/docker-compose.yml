@@ -17,6 +17,7 @@ services:
     volumes:
       - pinpoint-agent
     environment:
+      - SPRING_PROFILES=${SPRING_PROFILES}
       - COLLECTOR_IP=${COLLECTOR_IP}
       - COLLECTOR_TCP_PORT=${COLLECTOR_TCP_PORT}
       - COLLECTOR_STAT_PORT=${COLLECTOR_STAT_PORT}
