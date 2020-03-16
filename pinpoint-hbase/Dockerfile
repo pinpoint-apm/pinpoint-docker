@@ -19,7 +19,7 @@ RUN mkdir -p ${BASE_DIR} \
     && curl -fSL "${HBASE_REPOSITORY}/${HBASE_VERSION}/hbase-${HBASE_VERSION}-bin.tar.gz" -o hbase.tar.gz || curl -fSL "${HBASE_SUB_REPOSITORY}/${HBASE_VERSION}/hbase-${HBASE_VERSION}-bin.tar.gz" -o hbase.tar.gz \
     && tar xfvz hbase.tar.gz \
     && mv ../../hbase-site.xml ../../${HBASE_HOME}/conf/hbase-site.xml \
-    && curl -SL "https://raw.githubusercontent.com/naver/pinpoint/${PINPOINT_VERSION}/hbase/scripts/hbase-create.hbase" -o ${BASE_DIR}/hbase-create.hbase \
+    && curl -SL "https://raw.githubusercontent.com/naver/pinpoint/v${PINPOINT_VERSION}/hbase/scripts/hbase-create.hbase" -o ${BASE_DIR}/hbase-create.hbase \
     && ${HBASE_HOME}/bin/start-hbase.sh \
     && sleep 10 \
     && ${HBASE_HOME}/bin/hbase shell ${BASE_DIR}/hbase-create.hbase \
