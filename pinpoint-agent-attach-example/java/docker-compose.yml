@@ -9,6 +9,7 @@ services:
         - PINPOINT_VERSION=${PINPOINT_VERSION}
         - AGENT_ID=${AGENT_ID}
         - APP_NAME=${APP_NAME}
+        - SPRING_PROFILES=${SPRING_PROFILES}
     container_name: "java"
     image: "Your Image"
 

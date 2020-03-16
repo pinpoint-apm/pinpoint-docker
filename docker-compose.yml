@@ -80,6 +80,7 @@ services:
       - "9997:9997"
       - "${WEB_PAGE_PORT:-8080}:8080"
     environment:
+      - SPRING_PROFILES=${SPRING_PROFILES}
       - CLUSTER_ENABLE=${CLUSTER_ENABLE}
       - CLUSTER_ZOOKEEPER_ADDRESS=${CLUSTER_ZOOKEEPER_ADDRESS}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD}
@@ -137,6 +138,7 @@ services:
     networks:
       - pinpoint
     environment:
+      - SPRING_PROFILES=${SPRING_PROFILES}
       - CLUSTER_ENABLE=${CLUSTER_ENABLE}
       - CLUSTER_ZOOKEEPER_ADDRESS=${CLUSTER_ZOOKEEPER_ADDRESS}
       - HBASE_HOST=${HBASE_HOST}
@@ -180,6 +182,7 @@ services:
     volumes:
       - data-volume:/pinpoint-agent
     environment:
+      - SPRING_PROFILES=${SPRING_PROFILES}
       - COLLECTOR_IP=${COLLECTOR_IP}
       - COLLECTOR_TCP_PORT=${COLLECTOR_TCP_PORT}
       - COLLECTOR_STAT_PORT=${COLLECTOR_STAT_PORT}
