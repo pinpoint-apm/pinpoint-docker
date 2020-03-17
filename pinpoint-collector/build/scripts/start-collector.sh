@@ -13,4 +13,3 @@ sed -i "/hbase.client.port=/ s/=.*/=${HBASE_PORT}/" /usr/local/tomcat/webapps/RO
 sed -i "/level value=/ s/=.*/=\"${DEBUG_LEVEL}\"\/>/g" /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/profiles/${SPRING_PROFILES}/log4j.xml
 
 exec /usr/local/tomcat/bin/catalina.sh run
-  profiles/${SPRING_PROFILES}/
