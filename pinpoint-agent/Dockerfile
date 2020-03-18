@@ -13,7 +13,7 @@ RUN apk add --update curl bash \
     && chmod -R o+x /pinpoint-agent \
     && curl -SL ${INSTALL_URL} -o pinpoint-agent.tar.gz \
     && gunzip pinpoint-agent.tar.gz \
-    && tar -xf pinpoint-agent.tar -C /pinpoint-agent \
+    && tar -xf pinpoint-agent.tar --strip 1 -C /pinpoint-agent \
     && rm pinpoint-agent.tar \
     && apk del curl \
     && rm /var/cache/apk/*
