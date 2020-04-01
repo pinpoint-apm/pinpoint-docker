@@ -14,6 +14,8 @@ It supports and helps you understand your application in a glance and allow you 
 ## Supported Tags
 
  - 2.0.1
+   - Default transport module has changed from THRIFT to gRPC
+   - Spring profiler added (check [homepage](https://naver.github.io/pinpoint/2.0.1/installation.html#profiles) for more info)
  - 1.8.5 
  - 1.8.4
  - 1.8.3
