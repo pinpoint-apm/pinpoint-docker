@@ -90,6 +90,11 @@ Pinpoint-Flink server is running on [port 8081](http://localhost:8081/#/submit).
 Submit the jar file with *com.navercorp.pinpoint.flink.StatStreamingVer2Job* in entry class as below image.
 
 ![Pinpoint](https://github.com/naver/pinpoint-docker/blob/master/docs/Pinpoint-Flink%20upload.png)
+
+### Alarm configuration (optional)
+
+You can check the [alarm guide document at the homepage](https://naver.github.io/pinpoint/alarm.html) for full understanding.
+But for the docker image, All is set. fillout variables under *#mail server information required* in `.env` file before starting the container 
  
 ### Testing QuickStart application
  
