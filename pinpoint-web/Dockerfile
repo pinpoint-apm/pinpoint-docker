@@ -2,7 +2,7 @@ FROM tomcat:8-jre8
 
 LABEL maintainer="Roy Kim <roy.kim@navercorp.com>"
 
-ARG PINPOINT_VERSION=${PINPOINT_VERSION:-2.0.1}
+ARG PINPOINT_VERSION=${PINPOINT_VERSION:-2.0.2}
 ARG INSTALL_URL=https://github.com/naver/pinpoint/releases/download/v${PINPOINT_VERSION}/pinpoint-web-${PINPOINT_VERSION}.war
 
 COPY /build/scripts/start-web.sh /usr/local/bin/
