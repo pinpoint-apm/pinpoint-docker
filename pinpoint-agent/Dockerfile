@@ -2,7 +2,7 @@ FROM alpine:3.7
 
 LABEL maintainer="Roy Kim <roy.kim@navercorp.com>"
 
-ARG PINPOINT_VERSION=${PINPOINT_VERSION:-2.0.2}
+ARG PINPOINT_VERSION=${PINPOINT_VERSION:-2.0.3}
 ARG INSTALL_URL=https://github.com/naver/pinpoint/releases/download/v${PINPOINT_VERSION}/pinpoint-agent-${PINPOINT_VERSION}.tar.gz
 
 COPY /build/scripts/configure-agent.sh /usr/local/bin/

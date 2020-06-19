@@ -13,6 +13,7 @@ It supports and helps you understand your application in a glance and allow you 
 
 ## Supported Tags
 
+ - 2.0.3
  - 2.0.2
  - 2.0.1
    - Default transport module has changed from THRIFT to gRPC
