@@ -46,8 +46,8 @@ If you'd like to bring up a previous release. Try with docker-compose file from 
 
 ```
 git clone https://github.com/naver/pinpoint-docker.git
-git checkout {tag}
 cd pinpoint-docker
+git checkout {tag}
 docker-compose pull && docker-compose up -d
 ```
 
