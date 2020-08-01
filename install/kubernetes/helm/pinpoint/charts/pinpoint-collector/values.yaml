@@ -1,0 +1,9 @@
+#
+# pinpoint collector configuration
+#
+replicaCount: 1
+rollingMaxSurge: 1
+rollingMaxUnavailable: 1
+tolerations: []
+resources: {}
+image: pinpointdocker/pinpoint-collector:2.0.4

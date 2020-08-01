@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ template "pinpoint-collector.name" . }}
+    chart: {{ template "pinpoint-collector.chart" . }}
+    component: "collector"
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+  name: {{ template "pinpoint-collector.fullname" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "pinpoint-collector.name" . }}
+      component: "collector"
+      release: {{ .Release.Name }}
+  strategy:
+    rollingUpdate:
+      maxSurge: {{ .Values.rollingMaxSurge }}
+      maxUnavailable: {{ .Values.rollingMaxUnavailable }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "pinpoint-collector.name" . }}
+        component: "collector"
+        release: {{ .Release.Name }}
+        {{- if .Values.podAnnotations }}
+      annotations:
+{{ toYaml .Values.podAnnotations | indent 8 }}
+        {{- end }}
+    spec:
+      containers:
+        - name: pinpoint-collector
+{{- if contains "/" .Values.image }}
+          image: "{{ .Values.image }}"
+{{- else }}
+          image: "{{ .Values.global.hub }}/{{ .Values.image }}:{{ .Values.global.tag }}"
+{{- end }}
+          imagePullPolicy: Always
+          env:
+          - name: CLUSTER_ENABLE
+            value: "{{ .Values.cluster.enalbe }}"
+          - name: CLUSTER_ZOOKEEPER_ADDRESS
+            value: "{{ .Values.cluster.zookeeperAddress }}"
+          - name: HBASE_HOST
+            value: "{{ .Values.hbase.host }}"
+          - name: HBASE_PORT
+            value: "{{ .Values.hbase.host }}"
+          - name: SPRING_PROFILES
+            value: "{{ .Values.profiles }}"
+          - name: FLINK_CLUSTER_ENABLE
+            value: "{{ .Values.flink.enable }}"
+          - name: FLINK_CLUSTER_ZOOKEEPER_ADDRESS
+            value: "{{ .Values.flink.zookeeperAddress }}"
+          - name: JAVA_OPTS
+            value: -Dspring.profiles.active=${SPRING_PROFILES}
+          - name: DEBUG_LEVEL
+            value: "{{ .Values.debugLevel }}"
+          ports:
+          - containerPort: 9080
+          - containerPort: 9991
+          - containerPort: 9992
+          - containerPort: 9993
+          - containerPort: 9994
+          - containerPort: 9995
+          - containerPort: 9996
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /serverTime.pinpoint
+              port: 9080
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 2
+          name: pinpoint-collector
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /serverTime.pinpoint
+              port: 9080
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 2
+          resources:
+{{- if .Values.resources }}
+{{ toYaml .Values.resources | indent 12 }}
+{{- end }}
+      affinity:
+      {{- if .Values.tolerations }}
+      tolerations:
+{{ toYaml .Values.tolerations | indent 6 }}
+      {{- end }}
