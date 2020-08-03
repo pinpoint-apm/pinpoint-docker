@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "pinpoint-web.fullname" . }}
+  labels:
+{{ include "pinpoint-web.labels" . | indent 4 }}
+data:
+  SPRING_PROFILES: "{{ .Values.profiles }}"
+  JAVA_OPTS: "-Dspring.profiles.active=${SPRING_PROFILES},batch"
+  CLUSTER_ENABLE: "{{ .Values.cluster.enable }}"
+  CLUSTER_ZOOKEEPER_ADDRESS: "{{ .Values.cluster.zookeeper }}"
+  ANALYTICS: "{{ .Values.analytics }}"
+  HBASE_HOST: "{{ .Values.hbase.host }}"
+  HBASE_PORT: "{{ .Values.hbase.port }}"
+  DEBUG_LEVEL: "{{ .Values.debugLevel }}"
+  CONFIG_SHOW_APPLICATIONSTAT: "{{ .Values.showApplicationStat }}"
+  BATCH_ENABLE: "{{ .Values.batch.enable }}"
+  BATCH_SERVER_IP: "{{ .Values.batch.server }}"
+  BATCH_FILNK_SERVER: "{{ .Values.batch.flink }}"
+  JDBC_DRIVER: "{{ .Values.jdbc.driver }}"
+  JDBC_URL: "{{ .Values.jdbc.url }}"
+  MAIL_SERVER_URL: "{{ .Values.mail.server.url }}"
+  MAIL_SERVER_PORT: "{{ .Values.mail.server.port }}"
+  MAIL_SENDER_ADDRESS: "{{ .Values.mail.sender }}"
+  MAIL_TRANSPORT_PROTOCOL: "{{ .Values.mail.transportProtocol }}"
+  MAIL_SMTP_PORT: "{{ .Values.mail.smtp.port }}"
+  MAIL_SMTP_AUTH: "{{ .Values.mail.smtp.auth }}"
+  MAIL_SMTP_STARTTLS_ENABLE: "{{ .Values.mail.smtp.startTls.enable }}"
+  MAIL_SMTP_STARTTLS_REQUIRED: "{{ .Values.mail.smtp.startTls.required }}"
+  MAIL_DEBUG: "{{ .Values.mail.debug }}"

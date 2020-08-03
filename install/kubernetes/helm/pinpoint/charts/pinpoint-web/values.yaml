@@ -1,0 +1,67 @@
+replicaCount: 1
+imagePullPolicy: Always
+## Annotations to be added to Pinpoint Web pods
+##
+podAnnotations: {}
+## Pod affinity
+## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+##
+affinity: {}
+
+## Node tolerations for node-exporter scheduling to nodes with taints
+## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+##
+tolerations: []
+  # - key: "key"
+  #   operator: "Equal|Exists"
+  #   value: "value"
+  #   effect: "NoSchedule|PreferNoSchedule|NoExecute(1.6 only)"
+service:
+  ui:
+    type: "LoadBalancer"
+    nodePort:
+    clusterIp:
+    port: 8080
+  cluster:
+    type: "ClusterIP"
+    nodePort:
+    clusterIp:
+    port: 9997
+image:
+  repository: pinpointdocker/pinpoint-web
+  tag: 2.0.4
+profiles: release
+cluster:
+  enable: true
+  zookeeper: pinpoint-zookeeper
+adminPassword: admin
+analytics: false
+debugLevel: INFO
+showApplicationStat: true
+hbase:
+  host: pinpoint-zookeeper
+  port: 2181
+batch:
+  enable: false
+  server: 127.0.0.1
+  flink: 127.0.0.1
+jdbc:
+  driver: com.mysql.jdbc.Driver
+  url: jdbc:mysql://pinpoint-mysql:3306/pinpoint?characterEncoding=UTF-8
+  username: admin
+  password: admin
+mail:
+  server:
+    url: smtp.gmail.com
+    port: 587
+    username: username
+    password: password
+  sender: pinpoint_operator@pinpoint.com
+  transportProtocol: smtp
+  debug: false
+  smtp:
+    port: 25
+    auth: false
+    startTls:
+      enable: false
+      required: false

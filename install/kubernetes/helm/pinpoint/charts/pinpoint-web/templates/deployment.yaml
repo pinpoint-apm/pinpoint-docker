@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "pinpoint-web.fullname" . }}
+  labels:
+{{ include "pinpoint-web.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+{{ include "pinpoint-web.selectorLabels" . | indent 6 }}
+  template:
+    metadata:
+      labels:
+{{ include "pinpoint-web.labels" . | indent 8 }}
+      annotations:
+      {{- if .Values.podAnnotations }}
+      {{- range $key, $value := .Values.podAnnotations }}
+      {{ $key }}: {{ $value | quote }}
+      {{- end }}
+      {{- end }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          ports:
+            - name: ui
+              containerPort: 8080
+              protocol: TCP
+            - name: cluster
+              containerPort: 9997
+              protocol: TCP
+          envFrom:
+          - configMapRef:
+              name: {{ template "pinpoint-web.fullname" . }}
+          - secretRef:
+              name: {{ template "pinpoint-web.fullname" . }}
+          readinessProbe:
+            failureThreshold: 3
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 2
+          resources:
+{{- toYaml .Values.resources | nindent 12 }}
+{{- with .Values.affinity }}
+      affinity:
+{{- toYaml . | nindent 8 }}
+{{- end }}
+{{- with .Values.tolerations }}
+      tolerations:
+{{- toYaml . | nindent 8 }}
+{{- end }}

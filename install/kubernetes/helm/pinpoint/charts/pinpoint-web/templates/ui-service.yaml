@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Service
+metadata:
+  {{- if .Values.podAnnotations }}
+  {{- range $key, $value := .Values.podAnnotations }}
+  {{ $key }}: {{ $value | quote }}
+  {{- end }}
+  {{- end }}
+  name: {{ include "pinpoint-web.fullname" . }}-ui
+  labels:
+{{ include "pinpoint-web.labels" . | indent 4 }}
+spec:
+  ports:
+    - name: ui
+      port: {{ default 8080 .Values.service.ui.port }}
+      protocol: TCP
+      targetPort: 8080
+{{- if eq "NodePort" .Values.service.ui.type }}
+{{- if .Values.service.ui.nodePort }}
+      nodePort:  {{ .Values.service.ui.nodePort }}
+{{- end }}
+{{- end }}
+  {{- if eq "ClusterIP" .Values.service.ui.type }}
+  {{- if .Values.service.ui.clusterIP }}
+  clusterIP:  {{ .Values.service.ui.clusterIP }}
+  {{- end }}
+  {{- end }}
+  selector:
+{{ include "pinpoint-web.selectorLabels" . | indent 6 }}
+  type: "{{ .Values.service.ui.type }}"
+    {{- if eq "LoadBalancer" .Values.service.ui.type }}
+    {{- if .Values.service.ui.loadBalancerIP }}
+  loadBalancerIP: {{ .Values.service.ui.loadBalancerIP }}
+    {{- end -}}
+    {{- if .Values.service.ui.loadBalancerSourceRanges }}
+  loadBalancerSourceRanges:
+    {{- range .Values.service.ui.loadBalancerSourceRanges }}
+    - {{ . }}
+  {{- end }}
+  {{- end -}}
+{{- end -}}
