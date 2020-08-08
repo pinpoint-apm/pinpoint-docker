@@ -7,12 +7,16 @@ rollingMaxUnavailable: 1
 tolerations: []
 resources: {}
 image: pinpointdocker/pinpoint-collector:2.0.4
+profiles: release
+
+externalZookeeperAddress:
+externalHbaseAddress:
 
 cluster:
   enable: true
-
+  
 hbase:
-  host: "localhost:1234"
+  port: "2181"
 
 flink:
   enable: false

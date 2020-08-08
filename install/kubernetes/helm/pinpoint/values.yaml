@@ -3,5 +3,16 @@
 # Declare variables to be passed into your templates.
 pinpoint-collector:
   replicaCount: 1
+
+###################################
+# Zookeeper - External Zookeeper
+###################################
+  externalZookeeperAddress: 
+
+###################################
+# Hbase - External Hbase
+###################################
+  externalHbaseAddress:
+
 hbase:
   enabled: false

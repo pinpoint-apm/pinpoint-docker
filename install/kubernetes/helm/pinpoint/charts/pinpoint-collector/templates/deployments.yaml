@@ -43,19 +43,27 @@ spec:
           - name: CLUSTER_ENABLE
             value: "{{ .Values.cluster.enable }}"
           - name: CLUSTER_ZOOKEEPER_ADDRESS
-            value: "{{ .Values.cluster.zookeeperAddress }}"
+{{- if .Values.externalZookeeperAddress }}
+            value: "{{ .Values.externalZookeeperAddress }}"
+{{- else }}
+            value: "{{ .Release.Name }}-zookeeper"
+{{- end }}
           - name: HBASE_HOST
-            value: "{{ .Values.hbase.host }}"
+{{- if .Values.externalHbaseAddress }}
+            value: "{{ .Values.externalHbaseAddress }}"
+{{- else }}
+            value: "{{ .Release.Name }}-hbase-master"
+{{- end }}
           - name: HBASE_PORT
-            value: "{{ .Values.hbase.host }}"
-          - name: SPRING_PROFILES
-            value: "{{ .Values.profiles }}"
+            value: "{{ .Values.hbase.port }}"
           - name: FLINK_CLUSTER_ENABLE
             value: "{{ .Values.flink.enable }}"
+          - name: SPRING_PROFILES
+            value: "{{ .Values.profiles }}"
           - name: FLINK_CLUSTER_ZOOKEEPER_ADDRESS
             value: "{{ .Values.flink.zookeeperAddress }}"
           - name: JAVA_OPTS
-            value: -Dspring.profiles.active=${SPRING_PROFILES}
+            value: "-Dspring.profiles.active={{ .Values.profiles }}"
           - name: DEBUG_LEVEL
             value: "{{ .Values.debugLevel }}"
           ports:
