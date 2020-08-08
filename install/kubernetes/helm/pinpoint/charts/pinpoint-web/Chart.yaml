@@ -1,0 +1,7 @@
+apiVersion: v1
+name: pinpoint-web
+description: Helm chart for all pinpoint components
+version: 0.1.0
+keywords:
+  - pinpoint-web
+  - pinpoint
