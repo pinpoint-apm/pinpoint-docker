@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ template "pinpoint-collector.name" . }}
+    chart: {{ template "pinpoint-collector.chart" . }}
+    component: "collector"
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+  name: {{ template "pinpoint-collector.fullname" . }}
+spec:
+  ports:
+  - port: 9080
+    targetPort: 9080
+    name: http
+  - port: 9991
+    targetPort: 9991
+    name: tcp-9991
+  - port: 9992
+    targetPort: 9992
+    name: tcp-9992
+  - port: 9993
+    targetPort: 9993
+    name: tcp-9993
+  - port: 9994
+    targetPort: 9994
+    name: tcp-9994
+  - port: 9995
+    targetPort: 9995
+    name: udp-9995
+  - port: 9996
+    targetPort: 9996
+    name: udp-9996
+  selector:
+    app: {{ template "pinpoint-collector.name" . }}
+    component: "collector"
+    release: {{ .Release.Name }}
