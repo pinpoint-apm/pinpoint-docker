@@ -41,7 +41,7 @@ spec:
           imagePullPolicy: Always
           env:
           - name: CLUSTER_ENABLE
-            value: "{{ .Values.cluster.enalbe }}"
+            value: "{{ .Values.cluster.enable }}"
           - name: CLUSTER_ZOOKEEPER_ADDRESS
             value: "{{ .Values.cluster.zookeeperAddress }}"
           - name: HBASE_HOST
@@ -60,12 +60,19 @@ spec:
             value: "{{ .Values.debugLevel }}"
           ports:
           - containerPort: 9080
+            protocol: TCP
           - containerPort: 9991
+            protocol: TCP
           - containerPort: 9992
+            protocol: TCP
           - containerPort: 9993
+            protocol: TCP
           - containerPort: 9994
+            protocol: TCP
           - containerPort: 9995
+            protocol: UDP
           - containerPort: 9996
+            protocol: UDP
           livenessProbe:
             failureThreshold: 3
             httpGet:

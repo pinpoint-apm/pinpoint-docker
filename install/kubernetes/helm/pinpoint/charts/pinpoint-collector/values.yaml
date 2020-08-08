@@ -7,3 +7,12 @@ rollingMaxUnavailable: 1
 tolerations: []
 resources: {}
 image: pinpointdocker/pinpoint-collector:2.0.4
+
+cluster:
+  enable: true
+
+hbase:
+  host: "localhost:1234"
+
+flink:
+  enable: false
