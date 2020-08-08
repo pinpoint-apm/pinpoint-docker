@@ -1,0 +1,7 @@
+# Default values for pinpoint.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+pinpoint-collector:
+  replicaCount: 1
+hbase:
+  enabled: false
