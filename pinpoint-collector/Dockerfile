@@ -1,23 +1,22 @@
-FROM tomcat:8-jre8
+FROM openjdk:8-jdk-alpine
 
 LABEL maintainer="Roy Kim <roy.kim@navercorp.com>"
 
 ARG PINPOINT_VERSION=${PINPOINT_VERSION:-2.0.4}
 
-ARG INSTALL_URL=https://github.com/naver/pinpoint/releases/download/v${PINPOINT_VERSION}/pinpoint-collector-${PINPOINT_VERSION}.war
+ARG INSTALL_URL=https://github.com/naver/pinpoint/releases/download/v${PINPOINT_VERSION}/pinpoint-collector-boot-${PINPOINT_VERSION}.war
 
-COPY /build/scripts/start-collector.sh /usr/local/bin/
+RUN mkdir -p /pinpoint/config \
+    && mkdir -p /pinpoint/scripts
 
-RUN chmod a+x /usr/local/bin/start-collector.sh \
-    && curl -SL ${INSTALL_URL} -o pinpoint-collector.war \
-    && rm -rf /usr/local/tomcat/webapps \
-    && mkdir -p /usr/local/tomcat/webapps \
-    && unzip pinpoint-collector.war -d /usr/local/tomcat/webapps/ROOT \
-    && rm -rf pinpoint-collector.war \
-    && sed -i "s/8005/9005/g" /usr/local/tomcat/conf/server.xml \
-    && sed -i "s/8080/9080/g" /usr/local/tomcat/conf/server.xml \
-    && sed -i "s/8009/9009/g" /usr/local/tomcat/conf/server.xml \
-    && sed -i "s/8443/9443/g" /usr/local/tomcat/conf/server.xml
+COPY /build/config/pinpoint-collector.properties /pinpoint/config/
+COPY /build/scripts/start-collector.sh /pinpoint/scripts/
+#temporary line for local test
+#COPY /pinpoint-collector-boot-2.1.0-SNAPSHOT.jar /pinpoint/pinpoint-collector-boot.jar
 
-ENTRYPOINT ["/usr/local/bin/start-collector.sh"]
+RUN chmod a+x /pinpoint/scripts/start-collector.sh \
+    && chmod a+x /pinpoint/config/pinpoint-collector.properties \
+    && curl -SL ${INSTALL_URL} -o /pinpoint/pinpoint-collector-boot.jar
+
+ENTRYPOINT ["sh", "/pinpoint/scripts/start-collector.sh"]
 
