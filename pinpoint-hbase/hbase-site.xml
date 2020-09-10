@@ -4,9 +4,21 @@
         <value>file:///home/pinpoint/hbase</value>
     </property>
     <property>
-        <name>hbase.zookeeper.property.dataDir</name>
-        <value>/home/pinpoint/zookeeper</value>
+        <name>hbase.cluster.distributed</name>
+        <value>true</value>
     </property>
+     <property>
+        <name>zookeeper.znode.parent</name>
+        <value>/hbase</value>
+    </property>
+    <property>
+        <name>hbase.zookeeper.quorum</name>
+        <value>zoo1,zoo2,zoo3</value>
+    </property>
+    <property>
+		<name>hbase.zookeeper.property.clientPort</name>
+		<value>2181</value> 
+	</property> 
     <property>
         <name>hbase.master.port</name>
         <value>60000</value>

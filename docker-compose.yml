@@ -17,8 +17,6 @@ services:
       - /home/pinpoint/hbase
       - /home/pinpoint/zookeeper
     expose:
-      # zookeeper
-      - "2181"
       # HBase Master API port
       - "60000"
       # HBase Master Web UI
@@ -28,7 +26,6 @@ services:
       # HBase Regionserver web UI
       - "16030"
     ports:
-      - "${EXTERNAL_HBASE_PORT:-2181}:2181"
       - "60000:60000"
       - "16010:16010"
       - "60020:60020"
@@ -205,6 +202,12 @@ services:
     image: zookeeper:3.4
     restart: always
     hostname: zoo1
+    expose:
+      - "2181"
+      - "2888"
+      - "3888"
+    ports:
+      - "2181"
     environment:
       ZOO_MY_ID: 1
       ZOO_SERVERS: server.1=0.0.0.0:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
@@ -215,6 +218,12 @@ services:
     image: zookeeper:3.4
     restart: always
     hostname: zoo2
+    expose:
+      - "2181"
+      - "2888"
+      - "3888"
+    ports:
+      - "2181"
     environment:
       ZOO_MY_ID: 2
       ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=0.0.0.0:2888:3888 server.3=zoo3:2888:3888
@@ -225,6 +234,12 @@ services:
     image: zookeeper:3.4
     restart: always
     hostname: zoo3
+    expose:
+      - "2181"
+      - "2888"
+      - "3888"
+    ports:
+      - "2181"
     environment:
       ZOO_MY_ID: 3
       ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=0.0.0.0:2888:3888
