@@ -13,7 +13,8 @@ COPY /build/scripts/start-web.sh /pinpoint/scripts/
 #temporary line for local test
 #COPY /pinpoint-web-boot-2.1.0-SNAPSHOT.jar /pinpoint/pinpoint-web-boot.jar
 
-RUN chmod a+x /pinpoint/scripts/start-web.sh \
+RUN apk --no-cache add curl \
+    && chmod a+x /pinpoint/scripts/start-web.sh \
     && chmod a+x /pinpoint/config/pinpoint-web.properties \
     && curl -SL ${INSTALL_URL} -o /pinpoint/pinpoint-web-boot.jar
 
