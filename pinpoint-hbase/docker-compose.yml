@@ -15,8 +15,8 @@ services:
       - /home/pinpoint/hbase
       - /home/pinpoint/zookeeper
     expose:
-      # zookeeper
-      - "2181"
+#      # zookeeper
+#      - "2181"
       # HBase Master API port
       - "60000"
       # HBase Master Web UI

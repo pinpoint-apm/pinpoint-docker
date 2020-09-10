@@ -71,7 +71,6 @@ services:
       - pinpoint-mysql
     restart: always
     expose:
-      - "${SERVER_PORT:-8080}"
       - "9997"
     ports:
       - "9997:9997"
