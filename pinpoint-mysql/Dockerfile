@@ -1,6 +1,6 @@
 FROM mysql:5.7
 
-ARG PINPOINT_VERSION=${PINPOINT_VERSION:-2.0.4}
+ARG PINPOINT_VERSION=${PINPOINT_VERSION:-2.1.0}
 
 RUN apt update \ 
 	&& apt-get install -y --no-install-recommends ca-certificates wget \

@@ -5,6 +5,7 @@ This Docker image contains the Pinpoint Agent component of the Pinpoint applicat
 
 ## Supported Tags
 
+ - 2.1.0
  - 2.0.4
  - 2.0.3
  - 2.0.2
