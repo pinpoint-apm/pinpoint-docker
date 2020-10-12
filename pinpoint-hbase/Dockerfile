@@ -11,7 +11,6 @@ ENV HBASE_VERSION=1.2.6
 ENV BASE_DIR=/opt/hbase
 ENV HBASE_HOME=${BASE_DIR}/hbase-${HBASE_VERSION}
 
-
 COPY hbase-site.xml hbase-site.xml
 COPY hbase-env.sh hbase-env.sh
 COPY /build/scripts/initialize-hbase.sh /usr/local/bin/
@@ -29,4 +28,5 @@ RUN chmod a+x /usr/local/bin/initialize-hbase.sh \
 
 VOLUME ["/home/pinpoint/hbase", "/home/pinpoint/zookeeper"]
 
-CMD /usr/local/bin/initialize-hbase.sh && tail -f $HBASE_HOME/logs/*
+CMD /usr/local/bin/initialize-hbase.sh && tail -f /dev/null
+
