@@ -1,9 +1,8 @@
 #!/bin/bash
 
-if echo -e "exists 'AgentInfo'" | ${HBASE_HOME}/bin/hbase shell 2>&1 | grep -q "does exist" 2>/dev/null
+if echo -e "exists 'HostApplicationMap_Ver2'" | ${HBASE_HOME}/bin/hbase shell 2>&1 | grep -q "does exist" 2>/dev/null
 then 
     echo "Tables already exist"
-    break
 else
     sleep 15        
     echo "create tables"
