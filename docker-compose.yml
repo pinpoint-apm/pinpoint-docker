@@ -31,6 +31,8 @@ services:
       - "60020:60020"
       - "16030:16030"
     restart: always
+    depends_on:
+      - zoo1
 
   pinpoint-mysql:
     build:
@@ -69,6 +71,7 @@ services:
     depends_on:
       - pinpoint-hbase
       - pinpoint-mysql
+      - zoo1
     restart: always
     expose:
       - "9997"
@@ -119,6 +122,7 @@ services:
 
     depends_on:
       - pinpoint-hbase
+      - zoo1
     restart: always
     expose:
       - "9991"
@@ -255,6 +259,8 @@ services:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
     networks:
       - pinpoint
+    depends_on:
+      - zoo1
 
   taskmanager:
     container_name: "${PINPOINT_FLINK_NAME}-taskmanager"
@@ -268,6 +274,7 @@ services:
       - "6122:6122"
       - "19994:19994"
     depends_on:
+      - zoo1
       - jobmanager
     command: taskmanager
     links:
