@@ -18,6 +18,6 @@ sed -i "/profiler.transport.grpc.stat.collector.port=/ s/=.*/=${PROFILER_TRANSPO
 sed -i "/profiler.transport.grpc.span.collector.port=/ s/=.*/=${PROFILER_TRANSPORT_SPAN_COLLECTOR_PORT}/" /pinpoint-agent/pinpoint-root.config
 sed -i "/profiler.sampling.rate=/ s/=.*/=${PROFILER_SAMPLING_RATE}/" /pinpoint-agent/profiles/${SPRING_PROFILES}/pinpoint.config
 
-sed -i "/Root level=/ s/=.*/=\"${DEBUG_LEVEL}\"\/>/g" /pinpoint-agent/profiles/${SPRING_PROFILES}/log4j2.xml
+sed -i "/Root level=/ s/=.*/=\"${DEBUG_LEVEL}\">/g" /pinpoint-agent/profiles/${SPRING_PROFILES}/log4j2.xml
 
 exec "$@"
