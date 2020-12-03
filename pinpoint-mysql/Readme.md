@@ -4,7 +4,8 @@
 This Docker image contains the Pinpoint Mysql component of the Pinpoint application monitoring system.
 
 ## Supported Tags
- 
+
+ - 2.1.2
  - 2.1.0
  - 2.0.4
  - 2.0.3
