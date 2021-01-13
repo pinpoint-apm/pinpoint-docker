@@ -249,23 +249,30 @@ services:
 
   ##flink
   jobmanager:
+    build:
+      context: pinpoint-flink
+      dockerfile: Dockerfile
     container_name: "${PINPOINT_FLINK_NAME}-jobmanager"
-    image: flink:1.3.1
+    image: ${PINPOINT_FLINK_NAME}-flink:dev
     expose:
       - "6123"
     ports:
       - "${FLINK_WEB_PORT:-8081}:8081"
-    command: jobmanager
+    command: standalone-job -p 1 pinpoint-flink-job.jar -spring.profiles.active release
     environment:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
+      - PINPOINT_ZOOKEEPER_ADDRESS=${PINPOINT_ZOOKEEPER_ADDRESS}
     networks:
       - pinpoint
     depends_on:
       - zoo1
 
   taskmanager:
+    build:
+      context: pinpoint-flink
+      dockerfile: Dockerfile
     container_name: "${PINPOINT_FLINK_NAME}-taskmanager"
-    image: flink:1.3.1
+    image: ${PINPOINT_FLINK_NAME}-flink:dev
     expose:
       - "6121"
       - "6122"
