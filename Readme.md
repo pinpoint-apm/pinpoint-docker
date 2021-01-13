@@ -85,18 +85,7 @@ For more information checkout [Setting Alarm](http://naver.github.io/pinpoint/al
 
 The Pinpoint-Flink is necessary to use ['Application Inspector'](http://naver.github.io/pinpoint/applicationinspector.html) feature. 
 
-After all containers are started and ready to go. There is one more thing to do to use this features in Pinpoint.
-This feature is not mandatory, but since enabling this is a simple task, let's take care of it.
-
-Register a `job` on to pinpoint-flink server.  
-You can build the `job` from the [open-source of Pinpoint](https://github.com/naver/pinpoint), additional guide is [here](https://github.com/naver/pinpoint/blob/master/doc/application-inspector.md#application-inspector).   
-  
-If anyone have solution to put the job file into flink image without doing manually, please let us know.
-
-Pinpoint-Flink server is running on [port 8081](http://localhost:8081/#/submit). From `submit new job` menu
-Submit the jar file with *com.navercorp.pinpoint.flink.StatStreamingVer2Job* in entry class as below image.
-
-![Pinpoint](https://github.com/naver/pinpoint-docker/blob/master/docs/Pinpoint-Flink%20upload.png)
+After all containers are started and ready to go. Pinpoint-Flink server is running on [port 8081](http://localhost:8081/). 
 
 ### Alarm configuration (optional)
 
