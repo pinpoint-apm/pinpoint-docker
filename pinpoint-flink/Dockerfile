@@ -1,6 +1,5 @@
-FROM flink:1.3
+FROM flink:1.7
 ARG PINPOINT_VERSION=2.2.0
-# hadolint ignore=DL3008
 RUN apt-get update \
  && apt-get install --no-install-recommends -y zip \
  && apt-get clean \
