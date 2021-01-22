@@ -13,7 +13,10 @@ if [ "$1" = "standalone-job" ]; then
 
   /docker-entrypoint.sh jobmanager &
   sleep 5
-  exec flink run $@
+  if ! flink list | grep 'RUNNING'; then
+    flink run $@
+  fi
+  wait
 else
   exec /docker-entrypoint.sh $@
 fi
