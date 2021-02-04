@@ -253,7 +253,7 @@ services:
       context: pinpoint-flink
       dockerfile: Dockerfile
     container_name: "${PINPOINT_FLINK_NAME}-jobmanager"
-    image: ${PINPOINT_FLINK_NAME}-flink:dev
+    image: "pinpointdocker/pinpoint-flink:${PINPOINT_VERSION}"
     expose:
       - "6123"
     ports:
