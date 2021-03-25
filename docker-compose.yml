@@ -252,6 +252,9 @@ services:
     build:
       context: pinpoint-flink
       dockerfile: Dockerfile
+      args:
+        - PINPOINT_VERSION=${PINPOINT_VERSION}
+
     container_name: "${PINPOINT_FLINK_NAME}-jobmanager"
     image: "pinpointdocker/pinpoint-flink:${PINPOINT_VERSION}"
     expose:
@@ -271,8 +274,11 @@ services:
     build:
       context: pinpoint-flink
       dockerfile: Dockerfile
+      args:
+        - PINPOINT_VERSION=${PINPOINT_VERSION}
+
     container_name: "${PINPOINT_FLINK_NAME}-taskmanager"
-    image: ${PINPOINT_FLINK_NAME}-flink:dev
+    image: "pinpointdocker/pinpoint-flink:${PINPOINT_VERSION}"
     expose:
       - "6121"
       - "6122"
