@@ -12,7 +12,8 @@ Installing Pinpoint with these docker files will take approximately 10min. to ch
 It supports and helps you understand your application in a glance and allow you to build world-class, high-quality software.
 
 ## Supported Tags
- 
+
+ - 2.2.2
  - 2.2.1
  - 2.2.0
  - 2.1.2
