@@ -3,12 +3,12 @@
 
 # Pinpoint-Docker for Pinpoint
 
-Official git repository of Dockerized components of the [Pinpoint Application Monitoring](http://naver.github.io/pinpoint/).  
+Official git repository of Dockerized components of the [Pinpoint Application Monitoring](https://github.com/pinpoint-apm/pinpoint).  
 Installing Pinpoint with these docker files will take approximately 10min. to check out the features of pinpoint.
 
 ## What is Pinpoint
 
-[Pinpoint](https://github.com/naver/pinpoint), is the world's leading open-source application monitoring solution - trusted by millions of users around the globe.
+[Pinpoint](https://github.com/pinpoint-apm/pinpoint), is the world's leading open-source application monitoring solution - trusted by millions of users around the globe.
 It supports and helps you understand your application in a glance and allow you to build world-class, high-quality software.
 
 ## Supported Tags
@@ -23,7 +23,7 @@ It supports and helps you understand your application in a glance and allow you 
  - 2.0.2
  - 2.0.1
    - Default transport module has changed from THRIFT to gRPC
-   - Spring profiler added (check [homepage](https://naver.github.io/pinpoint/2.0.1/installation.html#profiles) for more info)
+   - Spring profiler added (check [homepage](https://pinpoint-apm.github.io/pinpoint/2.0.1/installation.html#profiles) for more info)
  - 1.8.5 
  - 1.8.4
  - 1.8.3
@@ -80,17 +80,17 @@ The Pinpoint-Mysql is necessary to use 'Alarm' feature. It's server is running o
 
 To send email alerts, you must make BATCH_ENABLE=true and change the other mail-related environment variables (MAIL_HOST, MAIL_PORT, MAIL_USERNAME, MAIL_PASSWORD, MAIL_PROPERTIES_MAIL_SMTP_FROM, ...) to the Pinpoint-Web server in *.env* file.
 
-For more information checkout [Setting Alarm](http://naver.github.io/pinpoint/alarm.html) in Pinpoint documentation.
+For more information checkout [Setting Alarm](http://pinpoint-apm.github.io/pinpoint/alarm.html) in Pinpoint documentation.
 
 ### Flink configuration (optional)
 
-The Pinpoint-Flink is necessary to use ['Application Inspector'](http://naver.github.io/pinpoint/applicationinspector.html) feature. 
+The Pinpoint-Flink is necessary to use ['Application Inspector'](https://pinpoint-apm.github.io/pinpoint/applicationinspector.html) feature. 
 
 After all containers are started and ready to go. Pinpoint-Flink server is running on [port 8081](http://localhost:8081/). 
 
 ### Alarm configuration (optional)
 
-You can check the [alarm guide document at the homepage](https://naver.github.io/pinpoint/alarm.html) for full understanding.
+You can check the [alarm guide document at the homepage](https://pinpoint-apm.github.io/pinpoint/alarm.html) for full understanding.
 But for the docker image, All is set. fillout variables under *#mail server information required* in `.env` file before starting the container 
  
 ### Testing QuickStart application
@@ -104,13 +104,13 @@ It will take some time for Pinpoint to retrieve the application's information wh
 Pinpoint-Agent only prepares required libraries for triggering Pinpoint-Agent.
 Running and configuring agents is manual action done by the user, but don't worry it's very simple.
 
-If you are not familiar with Pinpoint concept, please read: [Overview](http://naver.github.io/pinpoint/overview.html#architecture),
+If you are not familiar with Pinpoint concept, please read: [Overview](https://pinpoint-apm.github.io/pinpoint/overview.html#architecture),
 [Agents Installation](http://naver.github.io/pinpoint/installation.html#5-pinpoint-agent)
 
 **You will need to attach *Pinpoint-Agent* to your application.**
 
-Running Pinpoint-Agent docker-compose separately, Examples are [here](https://github.com/naver/pinpoint-docker/tree/master/pinpoint-agent-attach-example).  
-Otherwise, you can check how [Pinpoint-Quickstart](https://github.com/naver/pinpoint-docker/blob/master/docker-compose.yml) is attached to Pinpoint-Agent with docker-compose.
+Running Pinpoint-Agent docker-compose separately, Examples are [here](https://github.com/pinpoint-apm/pinpoint-docker/tree/master/pinpoint-agent-attach-example).  
+Otherwise, you can check how [Pinpoint-Quickstart](https://github.com/pinpoint-apm/pinpoint-docker/blob/master/docker-compose.yml) is attached to Pinpoint-Agent with docker-compose.
 
 We'll try to create more examples along the way.
 If anyone who can share their dockerfile, it's always welcome.
@@ -139,8 +139,8 @@ With `docker-compose` in this repository. You can create stand-alone containers 
 
 Pinpoint-Zookeeper is just an example of using zookeeper image. You can modify docker-compose files to suit your needs.
 
-For more specific details on what the values represents in *.env* file. Please check [Pinpoint Github Repository](https://github.com/naver/pinpoint) or
-[Pinpoint Web properties](https://github.com/naver/pinpoint/blob/master/web/src/main/resources/pinpoint-web.properties), [Pinpoint Collector properties](https://github.com/naver/pinpoint/blob/master/collector/src/main/resources/pinpoint-collector.properties), [Pinpoint Agent configuration](https://github.com/naver/pinpoint/blob/master/agent/src/main/resources-release/pinpoint.config).  
+For more specific details on what the values represents in *.env* file. Please check [Pinpoint Github Repository](https://github.com/pinpoint-apm/pinpoint) or
+[Pinpoint Web properties](https://github.com/pinpoint-apm/pinpoint/blob/master/web/src/main/resources/pinpoint-web-root.properties), [Pinpoint Collector properties](httpshttps://github.com/pinpoint-apm/pinpoint/blob/master/collector/src/main/resources/pinpoint-collector-root.properties), [Pinpoint Agent configuration](https://github.com/pinpoint-apm/pinpoint/blob/master/agent/src/main/resources/pinpoint-root.config).  
 Please note that only essential configuration options are adopted to pinpoint-docker(docker-compose). 
  
 ## logs 
@@ -154,12 +154,12 @@ You can also easily change the log level from *.env* file.
  
 ## Any Issues or Suggestions?
 
-Feel free to share any problems and suggestions via [Pinpoint GitHub Issue page](https://github.com/naver/pinpoint/issues).
+Feel free to share any problems and suggestions via [Pinpoint GitHub Issue page](https://github.com/pinpoint-apm/pinpoint/issues).
 Contributions on the pinpoint-docker image is also always welcome.
 
 ## License
 Pinpoint is licensed under the Apache License, Version 2.0.
-See [LICENSE](https://github.com/naver/pinpoint/blob/master/LICENSE) for full license text.
+See [LICENSE](https://github.com/pinpoint-apm/pinpoint/blob/master/LICENSE) for full license text.
 
 ```
 Copyright 2018 NAVER Corp.
