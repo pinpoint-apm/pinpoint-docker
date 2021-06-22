@@ -105,7 +105,7 @@ Pinpoint-Agent only prepares required libraries for triggering Pinpoint-Agent.
 Running and configuring agents is manual action done by the user, but don't worry it's very simple.
 
 If you are not familiar with Pinpoint concept, please read: [Overview](https://pinpoint-apm.github.io/pinpoint/overview.html#architecture),
-[Agents Installation](http://naver.github.io/pinpoint/installation.html#5-pinpoint-agent)
+[Agents Installation](https://pinpoint-apm.github.io/pinpoint/installation.html#5-pinpoint-agent)
 
 **You will need to attach *Pinpoint-Agent* to your application.**
 
