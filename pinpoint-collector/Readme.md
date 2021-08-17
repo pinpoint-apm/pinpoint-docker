@@ -5,6 +5,7 @@ This Docker image contains the Pinpoint Collector component of the Pinpoint appl
 
 ## Supported Tags
 
+ - 2.3.0
  - 2.2.2
  - 2.2.1
  - 2.2.0
