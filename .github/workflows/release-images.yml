@@ -1,0 +1,69 @@
+name: Release Images
+
+on:
+  release:
+    types: [ published ]
+
+jobs:
+  agent:
+    uses: pinpoint-apm/pinpoint-docker/.github/workflows/docker-image.yml@master
+    with:
+      component: pinpoint-agent
+    secrets:
+      docker_username: ${{ secrets.DOCKER_USERNAME }}
+      docker_token: ${{ secrets.DOCKER_TOKEN }}
+      docker_password: ${{ secrets.DOCKER_PASSWORD }}
+
+  collector:
+    uses: pinpoint-apm/pinpoint-docker/.github/workflows/docker-image.yml@master
+    with:
+      component: pinpoint-collector
+    secrets:
+      docker_username: ${{ secrets.DOCKER_USERNAME }}
+      docker_token: ${{ secrets.DOCKER_TOKEN }}
+      docker_password: ${{ secrets.DOCKER_PASSWORD }}
+          
+  flink:
+    uses: pinpoint-apm/pinpoint-docker/.github/workflows/docker-image.yml@master
+    with:
+      component: pinpoint-flink
+    secrets:
+      docker_username: ${{ secrets.DOCKER_USERNAME }}
+      docker_token: ${{ secrets.DOCKER_TOKEN }}
+      docker_password: ${{ secrets.DOCKER_PASSWORD }}
+           
+  hbase:
+    uses: pinpoint-apm/pinpoint-docker/.github/workflows/docker-image.yml@master
+    with:
+      component: pinpoint-hbase
+    secrets:
+      docker_username: ${{ secrets.DOCKER_USERNAME }}
+      docker_token: ${{ secrets.DOCKER_TOKEN }}
+      docker_password: ${{ secrets.DOCKER_PASSWORD }}
+          
+  mysql:
+    uses: pinpoint-apm/pinpoint-docker/.github/workflows/docker-image.yml@master
+    with:
+      component: pinpoint-mysql
+    secrets:
+      docker_username: ${{ secrets.DOCKER_USERNAME }}
+      docker_token: ${{ secrets.DOCKER_TOKEN }}
+      docker_password: ${{ secrets.DOCKER_PASSWORD }}
+          
+  quickstart:
+    uses: pinpoint-apm/pinpoint-docker/.github/workflows/docker-image.yml@master
+    with:
+      component: pinpoint-quickstart
+    secrets:
+      docker_username: ${{ secrets.DOCKER_USERNAME }}
+      docker_token: ${{ secrets.DOCKER_TOKEN }}
+      docker_password: ${{ secrets.DOCKER_PASSWORD }}
+          
+  web:
+    uses: pinpoint-apm/pinpoint-docker/.github/workflows/docker-image.yml@master
+    with:
+      component: pinpoint-web
+    secrets:
+      docker_username: ${{ secrets.DOCKER_USERNAME }}
+      docker_token: ${{ secrets.DOCKER_TOKEN }}
+      docker_password: ${{ secrets.DOCKER_PASSWORD }}
