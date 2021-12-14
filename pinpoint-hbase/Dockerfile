@@ -1,7 +1,5 @@
 FROM java:8-jdk
 
-LABEL maintainer="Roy Kim <roy.kim@navercorp.com>"
-
 ARG PINPOINT_VERSION=${PINPOINT_VERSION:-2.3.2}
 
 ENV HBASE_REPOSITORY=http://apache.mirrors.pair.com/hbase

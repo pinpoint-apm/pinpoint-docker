@@ -1,7 +1,5 @@
 FROM openjdk:8-jdk-alpine
 
-LABEL maintainer="Roy Kim <roy.kim@navercorp.com>"
-
 ARG PINPOINT_VERSION=${PINPOINT_VERSION:-2.3.2}
 ARG INSTALL_URL=https://github.com/naver/pinpoint/releases/download/v${PINPOINT_VERSION}/pinpoint-collector-boot-${PINPOINT_VERSION}.jar
 

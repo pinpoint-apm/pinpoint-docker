@@ -1,7 +1,5 @@
 FROM java:8
 
-LABEL maintainer="Roy Kim <roy.kim@navercorp.com>"
-
 ARG PINPOINT_VERSION
 ARG AGENT_ID
 ARG APP_NAME
