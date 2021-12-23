@@ -1,5 +1,5 @@
 FROM flink:1.7
-ARG PINPOINT_VERSION=${PINPOINT_VERSION:-2.3.2}
+ARG PINPOINT_VERSION=${PINPOINT_VERSION:-2.3.3}
 ARG INSTALL_URL=https://github.com/pinpoint-apm/pinpoint/releases/download/v${PINPOINT_VERSION}/pinpoint-flink-job-${PINPOINT_VERSION}.jar
 
 RUN apt-get update \

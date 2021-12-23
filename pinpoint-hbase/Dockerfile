@@ -1,6 +1,6 @@
 FROM java:8-jdk
 
-ARG PINPOINT_VERSION=${PINPOINT_VERSION:-2.3.2}
+ARG PINPOINT_VERSION=${PINPOINT_VERSION:-2.3.3}
 
 ENV HBASE_REPOSITORY=http://apache.mirrors.pair.com/hbase
 ENV HBASE_SUB_REPOSITORY=http://archive.apache.org/dist/hbase
