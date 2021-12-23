@@ -5,6 +5,7 @@ This Docker image contains the Pinpoint Hbase component of the Pinpoint applicat
 
 ## Supported Tags
 
+ - 2.3.3
  - 2.3.2
  - 2.3.1
  - 2.3.0
