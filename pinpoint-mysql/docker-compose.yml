@@ -22,4 +22,4 @@ services:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
 
     volumes:
-      - ./var/lib/mysql
+      - /var/lib/mysql
