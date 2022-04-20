@@ -10,17 +10,17 @@ This Docker image contains the Pinpoint Flink component of the Pinpoint applicat
  - 2.3.1
  - 2.3.0
  
-Please see the [Pinpoint-Docker GitHub repository](https://github.com/naver/pinpoint-docker) for further information on how to run, configure and build this image.
+Please see the [Pinpoint-Docker GitHub repository](https://github.com/pinpoint-apm/pinpoint-docker) for further information on how to run, configure and build this image.
 
 ## Any Issues or Suggestions?
 
-Feel free to share any problems and suggestions via [Pinpoint GitHub Issue page](https://github.com/naver/pinpoint/issues).
+Feel free to share any problems and suggestions via [Pinpoint GitHub Issue page](https://github.com/pinpoint-apm/pinpoint/issues).
 Contributions on the pinpoint-docker image is also always welcome.
 
 ## License
 
 Pinpoint is licensed under the Apache License, Version 2.0.
-See [LICENSE](https://github.com/naver/pinpoint/blob/master/LICENSE) for full license text.
+See [LICENSE](https://github.com/pinpoint-apm/pinpoint/blob/master/LICENSE) for full license text.
 
 ```
 Copyright 2018 NAVER Corp.

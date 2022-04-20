@@ -9,7 +9,7 @@ services:
     container_name: "pinpoint-quickstart"
     image: "pinpointdocker/pinpoint-quickstart"
     ports:
-      - "${APP_PORT:-8080}:8080"
+      - "${APP_PORT:-8085}:8080"
     volumes:
       - data-volume:/pinpoint-agent
     environment:

@@ -22,7 +22,7 @@ RUN chmod a+x /usr/local/bin/initialize-hbase.sh \
     && tar xfvz hbase.tar.gz \
     && mv ../../hbase-site.xml ../../${HBASE_HOME}/conf/hbase-site.xml \
     && mv ../../hbase-env.sh ../../${HBASE_HOME}/conf/hbase-env.sh \
-    && curl -SL "https://raw.githubusercontent.com/naver/pinpoint/v${PINPOINT_VERSION}/hbase/scripts/hbase-create.hbase" -o ${BASE_DIR}/hbase-create.hbase 
+    && curl -SL "https://raw.githubusercontent.com/pinpoint-apm/pinpoint/v${PINPOINT_VERSION}/hbase/scripts/hbase-create.hbase" -o ${BASE_DIR}/hbase-create.hbase
 
 VOLUME ["/home/pinpoint/hbase", "/home/pinpoint/zookeeper"]
 

@@ -1,5 +1,5 @@
 
-![Pinpoint](https://github.com/naver/pinpoint-docker/blob/master/docs/logo.png)
+![Pinpoint](https://github.com/pinpoint-apm/pinpoint-docker/blob/master/docs/logo.png)
 
 # Pinpoint-Docker for Pinpoint
 
@@ -48,14 +48,14 @@ With `docker-compose.yml` under *Pinpoint-Docker* folder brings up all the envir
 To monitor your agent see [configuration part](#configurations) for further details.  
 
 ```
-git clone https://github.com/naver/pinpoint-docker.git
+git clone https://github.com/pinpoint-apm/pinpoint-docker.git
 cd pinpoint-docker
 docker-compose pull && docker-compose up -d
 ```
 If you'd like to bring up a previous release. Try with docker-compose file from other tags. 
 
 ```
-git clone https://github.com/naver/pinpoint-docker.git
+git clone https://github.com/pinpoint-apm/pinpoint-docker.git
 cd pinpoint-docker
 git checkout {tag}
 docker-compose pull && docker-compose up -d
@@ -99,8 +99,8 @@ But for the docker image, All is set. fillout variables under *#mail server info
  
 ### Testing QuickStart application
  
-Now you are ready to monitor the sample application(Pinpoint-QuickStart [port 8000](http://localhost:8000)) provided.
-If you can't find any connected application from Pinpoint-Web's first page([port 8079](http://localhost:8079) as default), don't panic and wait for a while.
+Now you are ready to monitor the sample application(Pinpoint-QuickStart [port 8085](http://localhost:8085)) provided.
+If you can't find any connected application from Pinpoint-Web's first page([port 8080](http://localhost:8080) as default), don't panic and wait for a while.
 It will take some time for Pinpoint to retrieve the application's information when running for the first time.
 
 ## Monitoring YOUR Application
@@ -139,7 +139,7 @@ Configuration relies on supplying `docker-compose` with environment variables de
 With `docker-compose` in this repository. You can create stand-alone containers that are needed to run most of the features in Pinpoint.
 
 **Ports** can be also configured in .env file.
-(Default ports are Pinpoint-Web:8079, Quickstart:8000 and Flink:8081 as configured in .env file)
+(Default ports are Pinpoint-Web:8080, Pinpoint-Batch:8079, Quickstart:8085 and Flink:8081 as configured in .env file)
 
 Pinpoint-Zookeeper is just an example of using zookeeper image. You can modify docker-compose files to suit your needs.
 
