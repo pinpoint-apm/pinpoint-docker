@@ -77,9 +77,9 @@ services:
       - "9997"
     ports:
       - "9997:9997"
-      - "${SERVER_PORT:-8080}:${SERVER_PORT:-8080}"
+      - "${WEB_SERVER_PORT:-8080}:${WEB_SERVER_PORT:-8080}"
     environment:
-      - SERVER_PORT=${SERVER_PORT}
+      - WEB_SERVER_PORT=${WEB_SERVER_PORT}
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES},batch
       - PINPOINT_ZOOKEEPER_ADDRESS=${PINPOINT_ZOOKEEPER_ADDRESS}
       - CLUSTER_ENABLE=${CLUSTER_ENABLE}
@@ -159,7 +159,7 @@ services:
     container_name: "pinpoint-quickstart"
     image: "pinpointdocker/pinpoint-quickstart"
     ports:
-      - "${APP_PORT:-8080}:8080"
+      - "${APP_PORT:-8085}:8080"
     volumes:
       - data-volume:/pinpoint-agent
     environment:
@@ -168,6 +168,46 @@ services:
       - pinpoint
     depends_on:
       - pinpoint-agent
+
+  pinpoint-batch:
+    container_name: "${PINPOINT_BATCH_NAME}"
+    image: "pinpointdocker/pinpoint-batch:${IMAGE_VERSION}"
+    depends_on:
+      - pinpoint-hbase
+      - pinpoint-mysql
+      - zoo1
+    restart: always
+    environment:
+      - BATCH_SERVER_PORT=${BATCH_SERVER_PORT}
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES}
+      - PINPOINT_ZOOKEEPER_ADDRESS=${PINPOINT_ZOOKEEPER_ADDRESS}
+      - CLUSTER_ENABLE=${CLUSTER_ENABLE}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - CONFIG_SENDUSAGE=${CONFIG_SENDUSAGE}
+      - LOGGING_LEVEL_ROOT=${BATCH_LOGGING_LEVEL_ROOT}
+      - CONFIG_SHOW_APPLICATIONSTAT=${CONFIG_SHOW_APPLICATIONSTAT}
+      - BATCH_ENABLE=${BATCH_ENABLE}
+      - BATCH_SERVER_IP=${BATCH_SERVER_IP}
+      - BATCH_FLINK_SERVER=${BATCH_FLINK_SERVER}
+      - JDBC_DRIVERCLASSNAME=${JDBC_DRIVERCLASSNAME}
+      - JDBC_URL=${JDBC_URL}
+      - JDBC_USERNAME=${JDBC_USERNAME}
+      - JDBC_PASSWORD=${JDBC_PASSWORD}
+      - ALARM_MAIL_SERVER_URL=${ALARM_MAIL_SERVER_URL}
+      - ALARM_MAIL_SERVER_PORT=${ALARM_MAIL_SERVER_PORT}
+      - ALARM_MAIL_SERVER_USERNAME=${ALARM_MAIL_SERVER_USERNAME}
+      - ALARM_MAIL_SERVER_PASSWORD=${ALARM_MAIL_SERVER_PASSWORD}
+      - ALARM_MAIL_SENDER_ADDRESS=${ALARM_MAIL_SENDER_ADDRESS}
+      - ALARM_MAIL_TRANSPORT_PROTOCOL=${ALARM_MAIL_TRANSPORT_PROTOCOL}
+      - ALARM_MAIL_SMTP_PORT=${ALARM_MAIL_SMTP_PORT}
+      - ALARM_MAIL_SMTP_AUTH=${ALARM_MAIL_SMTP_AUTH}
+      - ALARM_MAIL_SMTP_STARTTLS_ENABLE=${ALARM_MAIL_SMTP_STARTTLS_ENABLE}
+      - ALARM_MAIL_SMTP_STARTTLS_REQUIRED=${ALARM_MAIL_SMTP_STARTTLS_REQUIRED}
+      - ALARM_MAIL_DEBUG=${ALARM_MAIL_DEBUG}
+    links:
+      - "pinpoint-mysql:pinpoint-mysql"
+    networks:
+      - pinpoint
 
   pinpoint-agent:
     build:

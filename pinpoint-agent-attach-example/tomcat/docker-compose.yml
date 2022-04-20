@@ -9,7 +9,7 @@ services:
     container_name: "tomcat"
     image: "Your Image"
     ports:
-      - "${APP_PORT:-8080}:8080"
+      - "${APP_PORT:-8085}:8080"
     volumes_from:
       - container:pinpoint-agent
     environment:
