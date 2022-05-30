@@ -170,8 +170,14 @@ services:
       - pinpoint-agent
 
   pinpoint-batch:
+    build:
+      context: ./pinpoint-batch/
+      dockerfile: Dockerfile
+      args:
+        - PINPOINT_VERSION=${PINPOINT_VERSION}
+
     container_name: "${PINPOINT_BATCH_NAME}"
-    image: "pinpointdocker/pinpoint-batch:${IMAGE_VERSION}"
+    image: "pinpointdocker/pinpoint-batch:${PINPOINT_VERSION}"
     depends_on:
       - pinpoint-hbase
       - pinpoint-mysql

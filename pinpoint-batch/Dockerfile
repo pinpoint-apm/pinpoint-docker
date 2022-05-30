@@ -1,6 +1,6 @@
 FROM openjdk:8-jdk-alpine
 
-ARG PINPOINT_VERSION=${PINPOINT_VERSION:-2.3.3}
+ARG PINPOINT_VERSION=${PINPOINT_VERSION:-2.4.0}
 ARG INSTALL_URL=https://github.com/pinpoint-apm/pinpoint/releases/download/v${PINPOINT_VERSION}/pinpoint-batch-${PINPOINT_VERSION}.jar
 
 RUN mkdir -p /pinpoint/config \
