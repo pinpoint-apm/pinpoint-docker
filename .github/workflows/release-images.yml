@@ -67,3 +67,12 @@ jobs:
       docker_username: ${{ secrets.DOCKER_USERNAME }}
       docker_token: ${{ secrets.DOCKER_TOKEN }}
       docker_password: ${{ secrets.DOCKER_PASSWORD }}
+          
+  batch:
+    uses: pinpoint-apm/pinpoint-docker/.github/workflows/docker-image.yml@master
+    with:
+      component: pinpoint-batch
+    secrets:
+      docker_username: ${{ secrets.DOCKER_USERNAME }}
+      docker_token: ${{ secrets.DOCKER_TOKEN }}
+      docker_password: ${{ secrets.DOCKER_PASSWORD }}
