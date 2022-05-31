@@ -5,27 +5,6 @@ This Docker image contains the Pinpoint Batch component of the Pinpoint applicat
 ## Supported Tags
 
  - 2.4.0
- - 2.3.3
- - 2.3.2
- - 2.3.1
- - 2.3.0
- - 2.2.2
- - 2.2.1
- - 2.2.0
- - 2.1.2
- - 2.1.0
- - 2.0.4
- - 2.0.3
- - 2.0.2
- - 2.0.1
- - 1.8.5 
- - 1.8.4
- - 1.8.3
- - 1.8.2
- - 1.8.1
- - 1.8.0
- - 1.7.3
- - 1.7.2
  
 Please see the [Pinpoint-Docker GitHub repository](https://github.com/pinpoint-apm/pinpoint-docker) for further information on how to run, configure and build this image.
 
