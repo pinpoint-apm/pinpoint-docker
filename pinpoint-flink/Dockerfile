@@ -1,4 +1,4 @@
-FROM flink:1.14.2
+FROM flink:1.14-java11
 ARG PINPOINT_VERSION=${PINPOINT_VERSION:-2.4.0}
 ARG INSTALL_URL=https://github.com/pinpoint-apm/pinpoint/releases/download/v${PINPOINT_VERSION}/pinpoint-flink-job-${PINPOINT_VERSION}.jar
 
