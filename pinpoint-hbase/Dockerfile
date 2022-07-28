@@ -1,4 +1,4 @@
-FROM java:8-jdk
+FROM openjdk:8u342-slim
 
 ARG PINPOINT_VERSION=${PINPOINT_VERSION:-2.4.0}
 
@@ -14,7 +14,8 @@ COPY hbase-env.sh hbase-env.sh
 COPY /build/scripts/initialize-hbase.sh /usr/local/bin/
 COPY /build/scripts/check-table.sh /usr/local/bin/
 
-RUN chmod a+x /usr/local/bin/initialize-hbase.sh \
+RUN apt-get update && apt-get install --no-install-recommends -y curl && apt-get clean \
+    && chmod a+x /usr/local/bin/initialize-hbase.sh \
     && chmod a+x /usr/local/bin/check-table.sh \
     && mkdir -p ${BASE_DIR} \
     && cd ${BASE_DIR} \
