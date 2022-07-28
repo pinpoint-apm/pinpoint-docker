@@ -250,7 +250,7 @@ services:
 
   #zookeepers
   zoo1:
-    image: zookeeper:3.4
+    image: zookeeper:3.4.13
     restart: always
     hostname: zoo1
     expose:
@@ -266,7 +266,7 @@ services:
       - pinpoint
 
   zoo2:
-    image: zookeeper:3.4
+    image: zookeeper:3.4.13
     restart: always
     hostname: zoo2
     expose:
@@ -282,7 +282,7 @@ services:
       - pinpoint
 
   zoo3:
-    image: zookeeper:3.4
+    image: zookeeper:3.4.13
     restart: always
     hostname: zoo3
     expose:
