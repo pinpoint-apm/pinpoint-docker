@@ -1,6 +1,6 @@
 FROM openjdk:11.0.16-jre-slim-buster
 
-ARG PINPOINT_VERSION=${PINPOINT_VERSION:-2.4.0}
+ARG PINPOINT_VERSION=${PINPOINT_VERSION:-2.4.1}
 ARG INSTALL_URL=https://github.com/pinpoint-apm/pinpoint/releases/download/v${PINPOINT_VERSION}/pinpoint-collector-boot-${PINPOINT_VERSION}.jar
 
 RUN mkdir -p /pinpoint/config \
@@ -9,7 +9,7 @@ RUN mkdir -p /pinpoint/config \
 COPY /build/config/pinpoint-collector.properties /pinpoint/config/
 COPY /build/scripts/start-collector.sh /pinpoint/scripts/
 #temporary line for local test
-#COPY /pinpoint-collector-boot-2.4.0-SNAPSHOT.jar /pinpoint/pinpoint-collector-boot.jar
+#COPY /pinpoint-collector-boot-2.4.1-SNAPSHOT.jar /pinpoint/pinpoint-collector-boot.jar
 
 RUN apt-get update && apt-get install --no-install-recommends -y curl && apt-get clean \
     && chmod a+x /pinpoint/scripts/start-collector.sh \
