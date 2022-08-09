@@ -14,7 +14,7 @@ services:
       - pinpoint
 
     volumes:
-      - /home/pinpoint/hbase
+      - hbase_data:/home/pinpoint/hbase
       - /home/pinpoint/zookeeper
     expose:
       # HBase Master API port
@@ -351,6 +351,7 @@ services:
 volumes:
   data-volume:
   mysql_data:
+  hbase_data:
 
 networks:
   pinpoint:
