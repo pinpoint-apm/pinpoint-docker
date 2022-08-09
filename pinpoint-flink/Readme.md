@@ -16,7 +16,7 @@ Please see the [Pinpoint-Docker GitHub repository](https://github.com/pinpoint-a
 
 ## Any Issues or Suggestions?
 
-Feel free to share any problems and suggestions via [Pinpoint GitHub Issue page](https://github.com/pinpoint-apm/pinpoint/issues).
+Feel free to share any problems and suggestions via [Pinpoint GitHub Issue page](https://github.com/pinpoint-apm/pinpoint-docker/issues).
 Contributions on the pinpoint-docker image is also always welcome.
 
 ## License

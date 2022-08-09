@@ -74,6 +74,7 @@ This will install and run all services required to run all features in Pinpoint 
  - Pinpoint-Hbase
  - Pinpoint-QuickStart(a sample application, 1.8.1+)
  - Pinpoint-Mysql(to support certain feature)
+ - Pinpoint-Batch
 This may take several minutes to download all necessary images.
 
 You can replace `QuickStart` application part with your application to start monitoring.  
