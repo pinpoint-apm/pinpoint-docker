@@ -13,10 +13,12 @@ COPY hbase-site.xml hbase-site.xml
 COPY hbase-env.sh hbase-env.sh
 COPY /build/scripts/initialize-hbase.sh /usr/local/bin/
 COPY /build/scripts/check-table.sh /usr/local/bin/
+COPY /build/scripts/configure-hbase.sh /usr/local/bin
 
 RUN apt-get update && apt-get install --no-install-recommends -y curl && apt-get clean \
     && chmod a+x /usr/local/bin/initialize-hbase.sh \
     && chmod a+x /usr/local/bin/check-table.sh \
+    && chmod a+x /usr/local/bin/configure-hbase.sh \
     && mkdir -p ${BASE_DIR} \
     && cd ${BASE_DIR} \
     && curl -fSL "${HBASE_REPOSITORY}/${HBASE_VERSION}/hbase-${HBASE_VERSION}-bin.tar.gz" -o hbase.tar.gz || curl -fSL "${HBASE_SUB_REPOSITORY}/${HBASE_VERSION}/hbase-${HBASE_VERSION}-bin.tar.gz" -o hbase.tar.gz \
