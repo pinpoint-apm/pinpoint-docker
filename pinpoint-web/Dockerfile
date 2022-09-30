@@ -1,6 +1,6 @@
 FROM openjdk:11.0.16-jre-slim-buster
 
-ARG PINPOINT_VERSION=${PINPOINT_VERSION:-2.4.1}
+ARG PINPOINT_VERSION=${PINPOINT_VERSION:-2.4.2}
 ARG INSTALL_URL=https://github.com/pinpoint-apm/pinpoint/releases/download/v${PINPOINT_VERSION}/pinpoint-web-boot-${PINPOINT_VERSION}.jar
 
 RUN mkdir -p /pinpoint/config \
@@ -9,7 +9,7 @@ RUN mkdir -p /pinpoint/config \
 COPY /build/config/pinpoint-web.properties /pinpoint/config/
 COPY /build/scripts/start-web.sh /pinpoint/scripts/
 #temporary line for local test
-#COPY /pinpoint-web-boot-2.4.1-SNAPSHOT.jar /pinpoint/pinpoint-web-boot.jar
+#COPY /pinpoint-web-boot-2.4.2-SNAPSHOT.jar /pinpoint/pinpoint-web-boot.jar
 
 RUN apt-get update && apt-get install --no-install-recommends -y curl && apt-get clean \
     && chmod a+x /pinpoint/scripts/start-web.sh \
