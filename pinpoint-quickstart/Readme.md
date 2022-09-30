@@ -4,7 +4,7 @@
 This Docker image contains the Pinpoint Quickstart sample to test Pinpoint application monitoring system.
 
 ## Supported Tags
-
+ - 2.4.2
  - 2.4.1
  - 2.4.0
  - 2.3.3

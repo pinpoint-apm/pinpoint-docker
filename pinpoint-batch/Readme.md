@@ -3,7 +3,7 @@
 This Docker image contains the Pinpoint Batch component of the Pinpoint application monitoring system.
 
 ## Supported Tags
-
+ - 2.4.2
  - 2.4.1
  - 2.4.0
  
