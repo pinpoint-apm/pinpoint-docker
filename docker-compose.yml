@@ -95,7 +95,7 @@ services:
       - "${WEB_SERVER_PORT:-8080}:${WEB_SERVER_PORT:-8080}"
     environment:
       - WEB_SERVER_PORT=${WEB_SERVER_PORT}
-      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES},batch
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES}
       - PINPOINT_ZOOKEEPER_ADDRESS=${PINPOINT_ZOOKEEPER_ADDRESS}
       - CLUSTER_ENABLE=${CLUSTER_ENABLE}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD}
@@ -223,9 +223,7 @@ services:
 
     container_name: "${PINPOINT_AGENT_NAME}"
     image: "pinpointdocker/pinpoint-agent:${PINPOINT_VERSION}"
-
     restart: unless-stopped
-
     networks:
       - pinpoint
     volumes:
