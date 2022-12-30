@@ -1,0 +1,214 @@
+version: "3.6"
+
+services:
+  pinpoint-web:
+    build:
+      context: ./pinpoint-web
+      dockerfile: Dockerfile-metric
+      args:
+        - PINPOINT_VERSION=${PINPOINT_VERSION}
+    container_name: "${PINPOINT_WEB_NAME}"
+    image: "pinpointdocker/pinpoint-web:${PINPOINT_VERSION}-metric"
+    depends_on:
+      - pinpoint-hbase
+      - pinpoint-mysql
+      - zoo1
+      - pinpoint-kafka-init
+      - pinot-init
+    restart: always
+    expose:
+      - "9997"
+    ports:
+      - "9997:9997"
+      - "${WEB_SERVER_PORT:-8080}:${WEB_SERVER_PORT:-8080}"
+    environment:
+      - WEB_SERVER_PORT=${WEB_SERVER_PORT}
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES},metric
+      - PINPOINT_ZOOKEEPER_ADDRESS=${PINPOINT_ZOOKEEPER_ADDRESS}
+      - CLUSTER_ENABLE=${CLUSTER_ENABLE}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - CONFIG_SENDUSAGE=${CONFIG_SENDUSAGE}
+      - LOGGING_LEVEL_ROOT=${WEB_LOGGING_LEVEL_ROOT}
+      - CONFIG_SHOW_APPLICATIONSTAT=${CONFIG_SHOW_APPLICATIONSTAT}
+      - JDBC_DRIVERCLASSNAME=${JDBC_DRIVERCLASSNAME}
+      - JDBC_URL=${JDBC_URL}
+      - JDBC_USERNAME=${JDBC_USERNAME}
+      - JDBC_PASSWORD=${JDBC_PASSWORD}
+      - PINPOINT_PINOT_JDBC_URL=${PINPOINT_PINOT_JDBC_URL}
+      - PINPOINT_PINOT_JDBC_USERNAME=${PINPOINT_PINOT_JDBC_USERNAME}
+      - PINPOINT_PINOT_JDBC_PASSWORD=${PINPOINT_PINOT_JDBC_PASSWORD}
+    links:
+      - "pinpoint-mysql:pinpoint-mysql"
+    networks:
+      - pinpoint
+
+
+  pinpoint-collector:
+    build:
+      context: ./pinpoint-collector
+      dockerfile: Dockerfile-metric
+      args:
+        - PINPOINT_VERSION=${PINPOINT_VERSION}
+    container_name: "${PINPOINT_COLLECTOR_NAME}"
+    image: "pinpointdocker/pinpoint-collector:${PINPOINT_VERSION}-metric"
+    depends_on:
+      - pinpoint-hbase
+      - zoo1
+      - pinpoint-kafka-init
+      - pinot-init
+    restart: always
+    expose:
+      - "9991"
+      - "9992"
+      - "9993"
+      - "9994"
+      - "9995"
+      - "9996"
+      - "15200"
+    ports:
+      - "${COLLECTOR_RECEIVER_GRPC_AGENT_PORT:-9991}:9991/tcp"
+      - "${COLLECTOR_RECEIVER_GRPC_STAT_PORT:-9992}:9992/tcp"
+      - "${COLLECTOR_RECEIVER_GRPC_SPAN_PORT:-9993}:9993/tcp"
+      - "${COLLECTOR_RECEIVER_BASE_PORT:-9994}:9994"
+      - "${COLLECTOR_RECEIVER_STAT_UDP_PORT:-9995}:9995/tcp"
+      - "${COLLECTOR_RECEIVER_SPAN_UDP_PORT:-9996}:9996/tcp"
+      - "${COLLECTOR_RECEIVER_STAT_UDP_PORT:-9995}:9995/udp"
+      - "${COLLECTOR_RECEIVER_SPAN_UDP_PORT:-9996}:9996/udp"
+    networks:
+      pinpoint:
+        ipv4_address: ${COLLECTOR_FIXED_IP}
+    environment:
+      - SPRING_PROFILES_ACTIVE=local,metric
+      - PINPOINT_ZOOKEEPER_ADDRESS=${PINPOINT_ZOOKEEPER_ADDRESS}
+      - CLUSTER_ENABLE=${CLUSTER_ENABLE}
+      - LOGGING_LEVEL_ROOT=${COLLECTOR_LOGGING_LEVEL_ROOT}
+      - FLINK_CLUSTER_ENABLE=${FLINK_CLUSTER_ENABLE}
+      - FLINK_CLUSTER_ZOOKEEPER_ADDRESS=${FLINK_CLUSTER_ZOOKEEPER_ADDRESS}
+      - PINPOINT_PINOT_JDBC_URL=${PINPOINT_PINOT_JDBC_URL}
+      - PINPOINT_PINOT_JDBC_USERNAME=${PINPOINT_PINOT_JDBC_USERNAME}
+      - PINPOINT_PINOT_JDBC_PASSWORD=${PINPOINT_PINOT_JDBC_PASSWORD}
+      - PINPOINT_METRIC_KAFKA_BOOTSTRAP_SERVERS=${PINPOINT_METRIC_KAFKA_BOOTSTRAP_SERVERS}
+
+  pinpoint-kafka:
+    image: ubuntu/kafka:3.1-22.04_beta
+    restart: unless-stopped
+    hostname: pinpoint-kafka
+    command: /etc/kafka/server.properties --override advertised.listeners=PLAINTEXT://pinpoint-kafka:9092
+    depends_on:
+      - pinot-zoo
+    expose:
+      - "9092"
+    environment:
+      - ZOOKEEPER_HOST=pinot-zoo
+    networks:
+      - pinpoint
+
+  pinpoint-kafka-init:
+    image: ubuntu/kafka:3.1-22.04_beta
+    restart: "no"
+    depends_on:
+      - pinpoint-kafka
+    entrypoint: >
+      sh -c "/opt/kafka/bin/kafka-topics.sh --create --topic url-stat --bootstrap-server pinpoint-kafka:9092 &&
+      /opt/kafka/bin/kafka-topics.sh --create --topic system-metric-data-type --bootstrap-server pinpoint-kafka:9092 &&
+      /opt/kafka/bin/kafka-topics.sh --create --topic system-metric-tag --bootstrap-server pinpoint-kafka:9092 &&
+      /opt/kafka/bin/kafka-topics.sh --create --topic system-metric-double --bootstrap-server pinpoint-kafka:9092"
+    networks:
+      - pinpoint
+
+  pinot-controller:
+    image: apachepinot/pinot:latest-arm64
+    restart: unless-stopped
+    command: StartController -zkAddress pinot-zoo
+    depends_on:
+      - pinot-zoo
+    expose:
+      - "9000"
+    ports:
+      - "9000:9000"
+    networks:
+      - pinpoint
+
+  pinot-broker-0:
+    image: apachepinot/pinot:latest-arm64
+    restart: unless-stopped
+    command: StartBroker -zkAddress pinot-zoo
+    depends_on:
+      - pinot-controller
+    expose:
+      - "8099"
+    networks:
+      - pinpoint
+
+  pinot-server-0:
+    image: apachepinot/pinot:latest-arm64
+    restart: unless-stopped
+    command: StartServer -zkAddress pinot-zoo
+    depends_on:
+      - pinot-broker-0
+    expose:
+      - "8098"
+    networks:
+      - pinpoint
+
+  pinot-init:
+    image: apachepinot/pinot:latest-arm64
+    restart: "no"
+    entrypoint: >
+      sh -c "
+      curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/v${PINPOINT_VERSION}/metric-module/metric/src/main/pinot/pinot-uriStat-table.json > uriStatTable.json &&
+      curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/v${PINPOINT_VERSION}/metric-module/metric/src/main/pinot/pinot-uriStat-schema.json > uriStatSchema.json &&
+      curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/v${PINPOINT_VERSION}/metric-module/metric/src/main/pinot/pinot-tag-table.json > tagTable.json &&
+      curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/v${PINPOINT_VERSION}/metric-module/metric/src/main/pinot/pinot-tag-schema.json > tagSchema.json &&
+      curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/v${PINPOINT_VERSION}/metric-module/metric/src/main/pinot/pinot-double-table.json > doubleTable.json &&
+      curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/v${PINPOINT_VERSION}/metric-module/metric/src/main/pinot/pinot-double-schema.json > doubleSchema.json &&
+      curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/v${PINPOINT_VERSION}/metric-module/metric/src/main/pinot/pinot-dataType-table.json > dataTypeTable.json &&
+      curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/v${PINPOINT_VERSION}/metric-module/metric/src/main/pinot/pinot-dataType-schema.json > dataTypeSchema.json &&
+
+      sed -i 's/localhost:19092/pinpoint-kafka:9092/g' uriStatTable.json tagTable.json doubleTable.json dataTypeTable.json &&
+      sed -i 's/uri-stat/url-stat/g' uriStatTable.json &&
+      sed -i '3,$$s/Double/DOUBLE/' doubleSchema.json &&
+
+      sleep 30 &&
+      /opt/pinot/bin/pinot-admin.sh AddTable -schemaFile uriStatSchema.json -realtimeTableConfigFile uriStatTable.json -controllerHost pinot-controller -controllerPort 9000 -exec &&
+      /opt/pinot/bin/pinot-admin.sh AddTable -schemaFile tagSchema.json -realtimeTableConfigFile tagTable.json -controllerHost pinot-controller -controllerPort 9000 -exec &&
+      /opt/pinot/bin/pinot-admin.sh AddTable -schemaFile doubleSchema.json -realtimeTableConfigFile doubleTable.json -controllerHost pinot-controller -controllerPort 9000 -exec &&
+      /opt/pinot/bin/pinot-admin.sh AddTable -schemaFile dataTypeSchema.json -realtimeTableConfigFile dataTypeTable.json -controllerHost pinot-controller -controllerPort 9000 -exec"
+    depends_on:
+      - pinot-server
+      - pinpoint-kafka-init
+    networks:
+      - pinpoint
+
+  #zookeepers
+  pinot-zoo:
+    image: zookeeper:3.8.0-temurin
+    restart: always
+    expose:
+      - "2181"
+    networks:
+      - pinpoint
+
+  telegraf:
+    image: telegraf:1.25.0
+    networks:
+      - pinpoint
+    depends_on:
+      - pinpoint-collector
+    entrypoint: >
+      sh -c "
+      echo '
+      [[inputs.cpu]]\
+        percpu = true\
+        totalcpu = true\
+        collect_cpu_time = false\
+        report_active = false\
+
+      [[outputs.http]]\
+        url = \"http://pinpoint-collector:15200/telegraf\"\
+        data_format = \"json\"\
+        [outputs.http.headers]\
+          hostGroupName = \"pinpoint-docker\"\
+          Content-Type = \"application/json\"\' > telegraf.conf &&
+      cat telegraf.conf &&
+      telegraf -config telegraf.conf"
