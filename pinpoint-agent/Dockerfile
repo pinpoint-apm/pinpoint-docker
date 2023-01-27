@@ -1,4 +1,4 @@
-FROM alpine:3.7
+FROM alpine:3.17.1
 
 ARG PINPOINT_VERSION=${PINPOINT_VERSION:-2.5.0}
 ARG INSTALL_URL=https://github.com/pinpoint-apm/pinpoint/releases/download/v${PINPOINT_VERSION}/pinpoint-agent-${PINPOINT_VERSION}.tar.gz
