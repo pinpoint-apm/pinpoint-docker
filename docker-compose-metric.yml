@@ -117,7 +117,7 @@ services:
       - pinpoint
 
   pinot-controller:
-    image: apachepinot/pinot:latest-arm64
+    image: apachepinot/pinot:latest
     restart: unless-stopped
     command: StartController -zkAddress pinot-zoo
     depends_on:
@@ -130,7 +130,7 @@ services:
       - pinpoint
 
   pinot-broker-0:
-    image: apachepinot/pinot:latest-arm64
+    image: apachepinot/pinot:latest
     restart: unless-stopped
     command: StartBroker -zkAddress pinot-zoo
     depends_on:
@@ -141,7 +141,7 @@ services:
       - pinpoint
 
   pinot-server-0:
-    image: apachepinot/pinot:latest-arm64
+    image: apachepinot/pinot:latest
     restart: unless-stopped
     command: StartServer -zkAddress pinot-zoo
     depends_on:
@@ -152,7 +152,7 @@ services:
       - pinpoint
 
   pinot-init:
-    image: apachepinot/pinot:latest-arm64
+    image: apachepinot/pinot:latest
     restart: "no"
     entrypoint: >
       sh -c "
@@ -166,8 +166,6 @@ services:
       curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/v${PINPOINT_VERSION}/metric-module/metric/src/main/pinot/pinot-dataType-schema.json > dataTypeSchema.json &&
 
       sed -i 's/localhost:19092/pinpoint-kafka:9092/g' uriStatTable.json tagTable.json doubleTable.json dataTypeTable.json &&
-      sed -i 's/uri-stat/url-stat/g' uriStatTable.json &&
-      sed -i '3,$$s/Double/DOUBLE/' doubleSchema.json &&
 
       sleep 30 &&
       /opt/pinot/bin/pinot-admin.sh AddTable -schemaFile uriStatSchema.json -realtimeTableConfigFile uriStatTable.json -controllerHost pinot-controller -controllerPort 9000 -exec &&
@@ -175,7 +173,7 @@ services:
       /opt/pinot/bin/pinot-admin.sh AddTable -schemaFile doubleSchema.json -realtimeTableConfigFile doubleTable.json -controllerHost pinot-controller -controllerPort 9000 -exec &&
       /opt/pinot/bin/pinot-admin.sh AddTable -schemaFile dataTypeSchema.json -realtimeTableConfigFile dataTypeTable.json -controllerHost pinot-controller -controllerPort 9000 -exec"
     depends_on:
-      - pinot-server
+      - pinot-server-0
       - pinpoint-kafka-init
     networks:
       - pinpoint
@@ -197,18 +195,6 @@ services:
       - pinpoint-collector
     entrypoint: >
       sh -c "
-      echo '
-      [[inputs.cpu]]\
-        percpu = true\
-        totalcpu = true\
-        collect_cpu_time = false\
-        report_active = false\
-
-      [[outputs.http]]\
-        url = \"http://pinpoint-collector:15200/telegraf\"\
-        data_format = \"json\"\
-        [outputs.http.headers]\
-          hostGroupName = \"pinpoint-docker\"\
-          Content-Type = \"application/json\"\' > telegraf.conf &&
-      cat telegraf.conf &&
+      curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/v${PINPOINT_VERSION}/metric-module/metric/src/main/telegraf/pinpoint-telegraf.conf > telegraf.conf &&
+      sed -i 's/127.0.0.1/pinpoint-collector/g' telegraf.conf &&
       telegraf -config telegraf.conf"
