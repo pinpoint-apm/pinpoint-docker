@@ -4,6 +4,7 @@
 This Docker image contains the Pinpoint Agent component of the Pinpoint application monitoring system.
 
 ## Supported Tags
+ - 2.5.1
  - 2.5.0
  - 2.4.2
  - 2.4.1
