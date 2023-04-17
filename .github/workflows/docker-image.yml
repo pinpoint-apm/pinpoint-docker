@@ -50,6 +50,7 @@ jobs:
           flavor: |
             latest=auto
             prefix=
+            suffixLatest=true
             suffix=${{ inputs.tag_postfix }}
         
       - name: Build and push Docker image
