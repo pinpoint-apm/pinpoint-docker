@@ -12,6 +12,7 @@ Installing Pinpoint with these docker files will take approximately 10min. to ch
 It supports and helps you understand your application in a glance and allow you to build world-class, high-quality software.
 
 ## Supported Tags
+ - 2.5.1-metric (for web and collector)
  - 2.5.1
  - 2.5.0
  - 2.4.2
@@ -56,32 +57,49 @@ git clone https://github.com/pinpoint-apm/pinpoint-docker.git
 cd pinpoint-docker
 docker-compose pull && docker-compose up -d
 ```
-If you'd like to bring up a previous release. Try with docker-compose file from other tags. 
+
+Since [Pinpoint v2.5.0](https://github.com/pinpoint-apm/pinpoint/releases/tag/v2.5.0), URI Metric and Infrastructure Metric are added.
+These need Apache Pinot cluster to work and [docker-compose-metric.yml](https://github.com/pinpoint-apm/pinpoint-docker/blob/master/docker-compose-metric.yml) has been added to provide them.
+To use URI Metric and Infrastructure Metric, include `docker-compose-metric.yml` to bring up Pinpoint containers as decribed below.
+
+```
+git clone https://github.com/pinpoint-apm/pinpoint-docker.git
+cd pinpoint-docker
+docker-compose pull
+docker-compose -f docker-compose.yml -f docker-compose-metric.yml up -d
+```
+
+Docker images for Pinpoint web and Pinpoint collector is provided since **v2.5.1**, so above wouldn't work with v2.5.0 images.
+To use Pinpoint v2.5.0 metric modules, you need to checkout v2.5.0 and then build the images ahead with below command.
 
 ```
 git clone https://github.com/pinpoint-apm/pinpoint-docker.git
 cd pinpoint-docker
 git checkout {tag}
-docker-compose pull && docker-compose up -d
+docker-compose -f docker-compose.yml -f docker-compose-metric.yml build
 ```
 
-You can also build the image with `docker-compose up -d` command without pulling the image. But you can reduce the time to 1/3 by just downloading them.
+If you are not interested in metric modules, simply remove `-f docker-compose-metric.yml` in docker-compose commands.
 
-This will install and run all services required to run all features in Pinpoint in docker containers joined with same network.
- - Pinpoint-Web Server
- - Pinpoint-Collector
- - Pinpoint-Agent
- - Pinpoint-Flink(to support certain feature)
- - Pinpoint-Zookeeper
- - Pinpoint-Hbase
- - Pinpoint-QuickStart(a sample application, 1.8.1+)
- - Pinpoint-Mysql(to support certain feature)
- - Pinpoint-Batch
-This may take several minutes to download all necessary images.
+Below are the list of images provided by this project:
+ - [Pinpoint-Web Server](https://hub.docker.com/r/pinpointdocker/pinpoint-web)
+ - [Pinpoint-Collector](https://hub.docker.com/repository/docker/pinpointdocker/pinpoint-collector/)
+ - [Pinpoint-Agent](https://hub.docker.com/r/pinpointdocker/pinpoint-agent)
+ - [Pinpoint-Flink](https://hub.docker.com/r/pinpointdocker/pinpoint-flink)
+ - [Pinpoint-Hbase](https://hub.docker.com/r/pinpointdocker/pinpoint-hbase)
+ - [Pinpoint-QuickStart](https://hub.docker.com/r/pinpointdocker/pinpoint-quickstart): a sample application, v1.8.1+
+ - [Pinpoint-Mysql](https://hub.docker.com/r/pinpointdocker/pinpoint-mysql)
+ - [Pinpoint-Batch](https://hub.docker.com/r/pinpointdocker/pinpoint-batch): v2.4.0+
 
 You can replace `QuickStart` application part with your application to start monitoring.  
  - check [`Testing QuickStart application`](#testing-quickstart-application) for a quick demo of pinpoint
  - check [`Monitoring YOUR Application`](#monitoring-your-application) part for further details
+
+Below are the list of images required for this project:
+ - [Apache Zookeeper v3.4.13](https://hub.docker.com/_/zookeeper/tags?page=1&name=3.4.13): For Hbase and Pinpoint cluster
+ - [Apache Zookeeper v3.8.0](https://hub.docker.com/_/zookeeper/tags?page=1&name=3.8.0): For Pinot cluster 
+ - [Apache Pinot](https://hub.docker.com/r/apachepinot/pinot): Tested with v0.11.0 ~ v0.13.0. Please refer to `pinot-init` in `docker-compose-metric.yml` to further see tables and schema information for Pinpoint.
+ - [Kafka](https://hub.docker.com/r/ubuntu/kafka): Currently using 3.1-22.04_beta. Please refer to `pinpoint-kafka-init` in `docker-compose-metric.yml` to further see topics needed for Pinpoint.
 
 ### Mysql (optional, 1.8.1+)
 
