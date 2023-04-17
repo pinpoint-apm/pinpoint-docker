@@ -102,6 +102,8 @@ services:
       - ZOOKEEPER_HOST=pinot-zoo
     networks:
       - pinpoint
+    volumes:
+      - pinot-kafka-volume:/var/lib/kafka/data
 
   pinpoint-kafka-init:
     image: ubuntu/kafka:3.1-22.04_beta
@@ -128,6 +130,8 @@ services:
       - "9000:9000"
     networks:
       - pinpoint
+    volumes:
+      - pinot-controller-volume:/tmp/data/controller
 
   pinot-broker-0:
     image: apachepinot/pinot:latest
@@ -150,6 +154,8 @@ services:
       - "8098"
     networks:
       - pinpoint
+    volumes:
+      - pinot-server-volume:/tmp/data/server
 
   pinot-init:
     image: apachepinot/pinot:latest
@@ -166,7 +172,7 @@ services:
       curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/v${PINPOINT_VERSION}/metric-module/metric/src/main/pinot/pinot-dataType-schema.json > dataTypeSchema.json &&
 
       sed -i 's/localhost:19092/pinpoint-kafka:9092/g' uriStatTable.json tagTable.json doubleTable.json dataTypeTable.json &&
-      sed -i 's/"replicasPerPartition": "[0-9*]"/"replicasPerPartition": "1"/g' uriStatTable.json tagTable.json doubleTable.json dataTypeTable.json &&
+      sed -i 's/.*replicasPerPartition.*/    \"replicasPerPartition\": \"1\",/g' uriStatTable.json tagTable.json doubleTable.json dataTypeTable.json &&
 
       /opt/pinot/bin/pinot-admin.sh AddTable -schemaFile uriStatSchema.json -realtimeTableConfigFile uriStatTable.json -controllerHost pinot-controller -controllerPort 9000 -exec &&
       /opt/pinot/bin/pinot-admin.sh AddTable -schemaFile tagSchema.json -realtimeTableConfigFile tagTable.json -controllerHost pinot-controller -controllerPort 9000 -exec &&
@@ -186,6 +192,9 @@ services:
       - "2181"
     networks:
       - pinpoint
+    volumes:
+      - pinot-zoo-data:/data
+      - pinot-zoo-datalog:/datalog
 
   telegraf:
     image: telegraf:1.25.0
@@ -198,3 +207,10 @@ services:
       curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/v${PINPOINT_VERSION}/metric-module/metric/src/main/telegraf/pinpoint-telegraf.conf > telegraf.conf &&
       sed -i 's/127.0.0.1/pinpoint-collector/g' telegraf.conf &&
       telegraf -config telegraf.conf"
+
+volumes:
+  pinot-zoo-data:
+  pinot-zoo-datalog:
+  pinot-server-volume:
+  pinot-controller-volume:
+  pinot-kafka-volume:
