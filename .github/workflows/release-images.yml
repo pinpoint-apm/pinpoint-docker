@@ -23,6 +23,17 @@ jobs:
       docker_token: ${{ secrets.DOCKER_TOKEN }}
       docker_password: ${{ secrets.DOCKER_PASSWORD }}
           
+  collector-metric:
+    uses: pinpoint-apm/pinpoint-docker/.github/workflows/docker-image.yml@master
+    with:
+      component: pinpoint-collector
+      dockerfile: Dockerfile-metric
+      tag_postfix: -metric
+    secrets:
+      docker_username: ${{ secrets.DOCKER_USERNAME }}
+      docker_token: ${{ secrets.DOCKER_TOKEN }}
+      docker_password: ${{ secrets.DOCKER_PASSWORD }}
+          
   flink:
     uses: pinpoint-apm/pinpoint-docker/.github/workflows/docker-image.yml@master
     with:
@@ -63,6 +74,17 @@ jobs:
     uses: pinpoint-apm/pinpoint-docker/.github/workflows/docker-image.yml@master
     with:
       component: pinpoint-web
+    secrets:
+      docker_username: ${{ secrets.DOCKER_USERNAME }}
+      docker_token: ${{ secrets.DOCKER_TOKEN }}
+      docker_password: ${{ secrets.DOCKER_PASSWORD }}
+                    
+  web-metric:
+    uses: pinpoint-apm/pinpoint-docker/.github/workflows/docker-image.yml@master
+    with:
+      component: pinpoint-web
+      dockerfile: Dockerfile-metric
+      tag_postfix: -metric
     secrets:
       docker_username: ${{ secrets.DOCKER_USERNAME }}
       docker_token: ${{ secrets.DOCKER_TOKEN }}

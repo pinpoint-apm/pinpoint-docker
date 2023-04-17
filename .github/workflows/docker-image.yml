@@ -6,6 +6,14 @@ on:
       component:
         required: true
         type: string
+      dockerfile:
+        required: false
+        type: string
+        default: 'Dockerfile'
+      tag_postfix:
+        required: false
+        type: string
+        default: ''
     secrets:
       docker_username:
         required: true
@@ -44,9 +52,10 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./${{ inputs.component }}
+          file: ./${{ inputs.component }}/${{ inputs.dockerfile }}
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ${{ steps.meta.outputs.tags }}${{ inputs.tag_postfix }}
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Update repo description
