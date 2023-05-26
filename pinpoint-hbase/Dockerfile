@@ -1,7 +1,7 @@
 FROM openjdk:8u342-slim
 
 ARG PINPOINT_VERSION=${PINPOINT_VERSION:-2.5.1}
-ARG HBASE_VERSION=${HBASE_VERSION-1.2.6}
+ARG HBASE_VERSION=${HBASE_VERSION:-1.2.6}
 
 ENV HBASE_REPOSITORY=http://apache.mirrors.pair.com/hbase
 ENV HBASE_SUB_REPOSITORY=http://archive.apache.org/dist/hbase
