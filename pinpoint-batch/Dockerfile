@@ -1,6 +1,6 @@
 FROM openjdk:11.0.16-jre-slim-buster
 
-ARG PINPOINT_VERSION=${PINPOINT_VERSION:-2.5.1}
+ARG PINPOINT_VERSION=${PINPOINT_VERSION:-2.5.2}
 ARG INSTALL_URL=https://github.com/pinpoint-apm/pinpoint/releases/download/v${PINPOINT_VERSION}/pinpoint-batch-${PINPOINT_VERSION}.jar
 
 RUN mkdir -p /pinpoint/config \
