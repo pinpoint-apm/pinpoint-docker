@@ -4,6 +4,8 @@
 This Docker image contains the Pinpoint Collector component of the Pinpoint application monitoring system.
 
 ## Supported Tags
+ - 2.5.3-metric
+ - 2.5.3
  - 2.5.2
  - 2.5.2-metric
  - 2.5.1
