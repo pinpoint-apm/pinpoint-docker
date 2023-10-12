@@ -4,7 +4,7 @@ services:
   pinpoint-hbase:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile_standalone
       args:
         - PINPOINT_VERSION=${PINPOINT_VERSION}
 
@@ -15,20 +15,28 @@ services:
       - /home/pinpoint/hbase
       - /home/pinpoint/zookeeper
     expose:
-#      # zookeeper
-#      - "2181"
       # HBase Master API port
       - "60000"
       # HBase Master Web UI
       - "16010"
       # Regionserver API port
-      - "60020"
+      - "16201"
       # HBase Regionserver web UI
       - "16030"
+      # Regionserver web UI port
+      - "16301"
     ports:
       - "${EXTERNAL_HBASE_PORT:-2181}:2181"
       - "60000:60000"
       - "16010:16010"
-      - "60020:60020"
       - "16030:16030"
+      - "16301:16301"
+      - "16201:16201"
     restart: always
+    networks:
+      - pinpoint
+
+networks:
+  pinpoint:
+    external:
+      name: pinpoint-zookeeper_pinpoint
