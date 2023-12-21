@@ -31,12 +31,26 @@ services:
       - LOGGING_LEVEL_ROOT=${WEB_LOGGING_LEVEL_ROOT}
       - CONFIG_SHOW_APPLICATIONSTAT=${CONFIG_SHOW_APPLICATIONSTAT}
       - JDBC_DRIVERCLASSNAME=${JDBC_DRIVERCLASSNAME}
-      - JDBC_URL=${JDBC_URL}
-      - JDBC_USERNAME=${JDBC_USERNAME}
-      - JDBC_PASSWORD=${JDBC_PASSWORD}
-      - PINPOINT_PINOT_JDBC_URL=${PINPOINT_PINOT_JDBC_URL}
-      - PINPOINT_PINOT_JDBC_USERNAME=${PINPOINT_PINOT_JDBC_USERNAME}
-      - PINPOINT_PINOT_JDBC_PASSWORD=${PINPOINT_PINOT_JDBC_PASSWORD}
+      - JDBC_URL=${SPRING_DATASOURCE_HIKARI_JDBCURL}
+      - JDBC_USERNAME=${SPRING_DATASOURCE_HIKARI_USERNAME}
+      - JDBC_PASSWORD=${SPRING_DATASOURCE_HIKARI_PASSWORD}
+      - PINPOINT_PINOT_JDBC_URL=${SPRING_PINOTDATASOURCE_HIKARI_JDBCURL}
+      - PINPOINT_PINOT_JDBC_USERNAME=${SPRING_PINOTDATASOURCE_HIKARI_USERNAME}
+      - PINPOINT_PINOT_JDBC_PASSWORD=${SPRING_PINOTDATASOURCE_HIKARI_PASSWORD}
+      - SPRING_DATASOURCE_HIKARI_JDBCURL=${SPRING_DATASOURCE_HIKARI_JDBCURL}
+      - SPRING_DATASOURCE_HIKARI_USERNAME=${SPRING_DATASOURCE_HIKARI_USERNAME}
+      - SPRING_DATASOURCE_HIKARI_PASSWORD=${SPRING_DATASOURCE_HIKARI_PASSWORD}
+      - SPRING_METADATASOURCE_HIKARI_JDBCURL=${SPRING_METADATASOURCE_HIKARI_JDBCURL}
+      - SPRING_METADATASOURCE_HIKARI_USERNAME=${SPRING_METADATASOURCE_HIKARI_USERNAME}
+      - SPRING_METADATASOURCE_HIKARI_PASSWORD=${SPRING_METADATASOURCE_HIKARI_PASSWORD}
+      - SPRING_PINOTDATASOURCE_HIKARI_JDBCURL=${SPRING_PINOTDATASOURCE_HIKARI_JDBCURL}
+      - SPRING_PINOTDATASOURCE_HIKARI_USERNAME=${SPRING_PINOTDATASOURCE_HIKARI_USERNAME}
+      - SPRING_PINOTDATASOURCE_HIKARI_PASSWORD=${SPRING_PINOTDATASOURCE_HIKARI_PASSWORD}
+      - SPRING_DATA_REDIS_HOST=${SPRING_DATA_REDIS_HOST}
+      - SPRING_DATA_REDIS_PORT=${SPRING_DATA_REDIS_PORT}
+      - SPRING_DATA_REDIS_USERNAME=${SPRING_DATA_REDIS_USERNAME}
+      - SPRING_DATA_REDIS_PASSWORD=${SPRING_DATA_REDIS_PASSWORD}
+
     links:
       - "pinpoint-mysql:pinpoint-mysql"
     networks:
@@ -84,10 +98,17 @@ services:
       - LOGGING_LEVEL_ROOT=${COLLECTOR_LOGGING_LEVEL_ROOT}
       - FLINK_CLUSTER_ENABLE=${FLINK_CLUSTER_ENABLE}
       - FLINK_CLUSTER_ZOOKEEPER_ADDRESS=${FLINK_CLUSTER_ZOOKEEPER_ADDRESS}
-      - PINPOINT_PINOT_JDBC_URL=${PINPOINT_PINOT_JDBC_URL}
-      - PINPOINT_PINOT_JDBC_USERNAME=${PINPOINT_PINOT_JDBC_USERNAME}
-      - PINPOINT_PINOT_JDBC_PASSWORD=${PINPOINT_PINOT_JDBC_PASSWORD}
+      - PINPOINT_PINOT_JDBC_URL=${SPRING_PINOTDATASOURCE_HIKARI_JDBCURL}
+      - PINPOINT_PINOT_JDBC_USERNAME=${SPRING_PINOTDATASOURCE_HIKARI_USERNAME}
+      - PINPOINT_PINOT_JDBC_PASSWORD=${SPRING_PINOTDATASOURCE_HIKARI_PASSWORD}
+      - SPRING_PINOTDATASOURCE_HIKARI_JDBCURL=${SPRING_PINOTDATASOURCE_HIKARI_JDBCURL}
+      - SPRING_PINOTDATASOURCE_HIKARI_USERNAME=${SPRING_PINOTDATASOURCE_HIKARI_USERNAME}
+      - SPRING_PINOTDATASOURCE_HIKARI_PASSWORD=${SPRING_PINOTDATASOURCE_HIKARI_PASSWORD}
       - PINPOINT_METRIC_KAFKA_BOOTSTRAP_SERVERS=${PINPOINT_METRIC_KAFKA_BOOTSTRAP_SERVERS}
+      - SPRING_DATA_REDIS_HOST=${SPRING_DATA_REDIS_HOST}
+      - SPRING_DATA_REDIS_PORT=${SPRING_DATA_REDIS_PORT}
+      - SPRING_DATA_REDIS_USERNAME=${SPRING_DATA_REDIS_USERNAME}
+      - SPRING_DATA_REDIS_PASSWORD=${SPRING_DATA_REDIS_PASSWORD}
 
   pinpoint-kafka:
     image: ubuntu/kafka:3.1-22.04_beta
@@ -162,14 +183,14 @@ services:
     restart: "no"
     entrypoint: >
       sh -c "
-      curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/v${PINPOINT_VERSION}/uristat/uristat-common/src/main/pinot/pinot-uriStat-realtime-table.json > uriStatTable.json &&
-      curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/v${PINPOINT_VERSION}/uristat/uristat-common/src/main/pinot/pinot-uriStat-schema.json > uriStatSchema.json &&
-      curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/v${PINPOINT_VERSION}/metric-module/metric/src/main/pinot/pinot-tag-realtime-table.json > tagTable.json &&
-      curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/v${PINPOINT_VERSION}/metric-module/metric/src/main/pinot/pinot-tag-schema.json > tagSchema.json &&
-      curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/v${PINPOINT_VERSION}/metric-module/metric/src/main/pinot/pinot-double-realtime-table.json > doubleTable.json &&
-      curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/v${PINPOINT_VERSION}/metric-module/metric/src/main/pinot/pinot-double-schema.json > doubleSchema.json &&
-      curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/v${PINPOINT_VERSION}/metric-module/metric/src/main/pinot/pinot-dataType-realtime-table.json > dataTypeTable.json &&
-      curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/v${PINPOINT_VERSION}/metric-module/metric/src/main/pinot/pinot-dataType-schema.json > dataTypeSchema.json &&
+      curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/${PINPOINT_VERSION}/uristat/uristat-common/src/main/pinot/pinot-uriStat-realtime-table.json > uriStatTable.json &&
+      curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/${PINPOINT_VERSION}/uristat/uristat-common/src/main/pinot/pinot-uriStat-schema.json > uriStatSchema.json &&
+      curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/${PINPOINT_VERSION}/metric-module/metric/src/main/pinot/pinot-tag-realtime-table.json > tagTable.json &&
+      curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/${PINPOINT_VERSION}/metric-module/metric/src/main/pinot/pinot-tag-schema.json > tagSchema.json &&
+      curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/${PINPOINT_VERSION}/metric-module/metric/src/main/pinot/pinot-double-realtime-table.json > doubleTable.json &&
+      curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/${PINPOINT_VERSION}/metric-module/metric/src/main/pinot/pinot-double-schema.json > doubleSchema.json &&
+      curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/${PINPOINT_VERSION}/metric-module/metric/src/main/pinot/pinot-dataType-realtime-table.json > dataTypeTable.json &&
+      curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/${PINPOINT_VERSION}/metric-module/metric/src/main/pinot/pinot-dataType-schema.json > dataTypeSchema.json &&
 
       sed -i 's/localhost:19092/pinpoint-kafka:9092/g' uriStatTable.json tagTable.json doubleTable.json dataTypeTable.json &&
       sed -i 's/.*replicasPerPartition.*/    \"replicasPerPartition\": \"1\",/g' uriStatTable.json tagTable.json doubleTable.json dataTypeTable.json &&
@@ -204,7 +225,7 @@ services:
       - pinpoint-collector
     entrypoint: >
       sh -c "
-      curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/v${PINPOINT_VERSION}/metric-module/metric/src/main/telegraf/pinpoint-telegraf.conf > telegraf.conf &&
+      curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/${PINPOINT_VERSION}/metric-module/metric/src/main/telegraf/pinpoint-telegraf.conf > telegraf.conf &&
       sed -i 's/127.0.0.1/pinpoint-collector/g' telegraf.conf &&
       telegraf -config telegraf.conf"
 
