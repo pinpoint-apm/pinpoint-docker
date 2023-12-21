@@ -50,16 +50,18 @@ services:
       - zoo1
 
   pinpoint-mysql:
-    build:
-      context: ./pinpoint-mysql/
-      dockerfile: Dockerfile
-      args:
-        - PINPOINT_VERSION=${PINPOINT_VERSION}
-    
     container_name: pinpoint-mysql
-    restart: always
-    image: "pinpointdocker/pinpoint-mysql:${PINPOINT_VERSION}"
+    image: mysql:8.0
+    restart: no
     hostname: pinpoint-mysql
+    entrypoint: > 
+      sh -c "
+      curl -SL "https://raw.githubusercontent.com/ga-ram/pinpoint/latest/web/src/main/resources/sql/CreateTableStatement-mysql.sql" -o /docker-entrypoint-initdb.d/CreateTableStatement-mysql.sql &&
+      curl -SL "https://raw.githubusercontent.com/ga-ram/pinpoint/latest/web/src/main/resources/sql/SpringBatchJobRepositorySchema-mysql.sql" -o /docker-entrypoint-initdb.d/SpringBatchJobRepositorySchema-mysql.sql &&
+      sed -i '/^--/d' /docker-entrypoint-initdb.d/CreateTableStatement-mysql.sql &&
+      sed -i '/^--/d' /docker-entrypoint-initdb.d/SpringBatchJobRepositorySchema-mysql.sql &&
+      docker-entrypoint.sh mysqld
+      "
     ports:
       - "3306:3306"
     environment:
@@ -87,6 +89,7 @@ services:
       - pinpoint-hbase
       - pinpoint-mysql
       - zoo1
+      - redis
     restart: always
     expose:
       - "9997"
@@ -103,9 +106,20 @@ services:
       - LOGGING_LEVEL_ROOT=${WEB_LOGGING_LEVEL_ROOT}
       - CONFIG_SHOW_APPLICATIONSTAT=${CONFIG_SHOW_APPLICATIONSTAT}
       - JDBC_DRIVERCLASSNAME=${JDBC_DRIVERCLASSNAME}
-      - JDBC_URL=${JDBC_URL}
-      - JDBC_USERNAME=${JDBC_USERNAME}
-      - JDBC_PASSWORD=${JDBC_PASSWORD}
+      - JDBC_URL=${SPRING_DATASOURCE_HIKARI_JDBCURL}
+      - JDBC_USERNAME=${SPRING_DATASOURCE_HIKARI_USERNAME}
+      - JDBC_PASSWORD=${SPRING_DATASOURCE_HIKARI_PASSWORD}
+      - SPRING_DATASOURCE_HIKARI_JDBCURL=${SPRING_DATASOURCE_HIKARI_JDBCURL}
+      - SPRING_DATASOURCE_HIKARI_USERNAME=${SPRING_DATASOURCE_HIKARI_USERNAME}
+      - SPRING_DATASOURCE_HIKARI_PASSWORD=${SPRING_DATASOURCE_HIKARI_PASSWORD}
+      - SPRING_METADATASOURCE_HIKARI_JDBCURL=${SPRING_METADATASOURCE_HIKARI_JDBCURL}
+      - SPRING_METADATASOURCE_HIKARI_USERNAME=${SPRING_METADATASOURCE_HIKARI_USERNAME}
+      - SPRING_METADATASOURCE_HIKARI_PASSWORD=${SPRING_METADATASOURCE_HIKARI_PASSWORD}
+      - SPRING_DATA_REDIS_HOST=${SPRING_DATA_REDIS_HOST}
+      - SPRING_DATA_REDIS_PORT=${SPRING_DATA_REDIS_PORT}
+      - SPRING_DATA_REDIS_USERNAME=${SPRING_DATA_REDIS_USERNAME}
+      - SPRING_DATA_REDIS_PASSWORD=${SPRING_DATA_REDIS_PASSWORD}
+
     links:
       - "pinpoint-mysql:pinpoint-mysql"
     networks:
@@ -124,6 +138,7 @@ services:
     depends_on:
       - pinpoint-hbase
       - zoo1
+      - redis
     restart: always
     expose:
       - "9991"
@@ -151,6 +166,10 @@ services:
       - LOGGING_LEVEL_ROOT=${COLLECTOR_LOGGING_LEVEL_ROOT}
       - FLINK_CLUSTER_ENABLE=${FLINK_CLUSTER_ENABLE}
       - FLINK_CLUSTER_ZOOKEEPER_ADDRESS=${FLINK_CLUSTER_ZOOKEEPER_ADDRESS}
+      - SPRING_DATA_REDIS_HOST=${SPRING_DATA_REDIS_HOST}
+      - SPRING_DATA_REDIS_PORT=${SPRING_DATA_REDIS_PORT}
+      - SPRING_DATA_REDIS_USERNAME=${SPRING_DATA_REDIS_USERNAME}
+      - SPRING_DATA_REDIS_PASSWORD=${SPRING_DATA_REDIS_PASSWORD}
 
   pinpoint-quickstart:
     build:
@@ -164,7 +183,7 @@ services:
     volumes:
       - data-volume:/pinpoint-agent
     environment:
-      JAVA_OPTS: "-javaagent:/pinpoint-agent/pinpoint-bootstrap-${PINPOINT_VERSION}.jar -Dpinpoint.agentId=${AGENT_ID} -Dpinpoint.applicationName=${APP_NAME} -Dpinpoint.profiler.profiles.active=${SPRING_PROFILES}"
+      JAVA_OPTS: "-javaagent:/pinpoint-agent/pinpoint-bootstrap.jar -Dpinpoint.agentId=${AGENT_ID} -Dpinpoint.applicationName=${APP_NAME} -Dpinpoint.profiler.profiles.active=${SPRING_PROFILES}"
     networks:
       - pinpoint
     depends_on:
@@ -195,9 +214,15 @@ services:
       - CONFIG_SHOW_APPLICATIONSTAT=${CONFIG_SHOW_APPLICATIONSTAT}
       - BATCH_FLINK_SERVER=${BATCH_FLINK_SERVER}
       - JDBC_DRIVERCLASSNAME=${JDBC_DRIVERCLASSNAME}
-      - JDBC_URL=${JDBC_URL}
-      - JDBC_USERNAME=${JDBC_USERNAME}
-      - JDBC_PASSWORD=${JDBC_PASSWORD}
+      - JDBC_URL=${SPRING_DATASOURCE_HIKARI_JDBCURL}
+      - JDBC_USERNAME=${SPRING_DATASOURCE_HIKARI_USERNAME}
+      - JDBC_PASSWORD=${SPRING_DATASOURCE_HIKARI_PASSWORD}
+      - SPRING_DATASOURCE_HIKARI_JDBCURL=${SPRING_DATASOURCE_HIKARI_JDBCURL}
+      - SPRING_DATASOURCE_HIKARI_USERNAME=${SPRING_DATASOURCE_HIKARI_USERNAME}
+      - SPRING_DATASOURCE_HIKARI_PASSWORD=${SPRING_DATASOURCE_HIKARI_PASSWORD}
+      - SPRING_METADATASOURCE_HIKARI_JDBCURL=${SPRING_METADATASOURCE_HIKARI_JDBCURL}
+      - SPRING_METADATASOURCE_HIKARI_USERNAME=${SPRING_METADATASOURCE_HIKARI_USERNAME}
+      - SPRING_METADATASOURCE_HIKARI_PASSWORD=${SPRING_METADATASOURCE_HIKARI_PASSWORD}
       - ALARM_MAIL_SERVER_URL=${ALARM_MAIL_SERVER_URL}
       - ALARM_MAIL_SERVER_PORT=${ALARM_MAIL_SERVER_PORT}
       - ALARM_MAIL_SERVER_USERNAME=${ALARM_MAIL_SERVER_USERNAME}
@@ -345,6 +370,16 @@ services:
     networks:
       - pinpoint
 
+  redis:
+    image: redis:7.0.14
+    restart: always
+    hostname: pinpoint-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - pinpoint
+
+    
 volumes:
   data-volume:
   mysql_data:
