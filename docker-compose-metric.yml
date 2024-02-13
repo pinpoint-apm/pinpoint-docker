@@ -2,11 +2,6 @@ version: "3.6"
 
 services:
   pinpoint-web:
-    build:
-      context: ./pinpoint-web
-      dockerfile: Dockerfile-metric
-      args:
-        - PINPOINT_VERSION=${PINPOINT_VERSION}
     container_name: "${PINPOINT_WEB_NAME}"
     image: "pinpointdocker/pinpoint-web:${PINPOINT_VERSION}-metric"
     depends_on:
@@ -58,11 +53,6 @@ services:
 
 
   pinpoint-collector:
-    build:
-      context: ./pinpoint-collector
-      dockerfile: Dockerfile-metric
-      args:
-        - PINPOINT_VERSION=${PINPOINT_VERSION}
     container_name: "${PINPOINT_COLLECTOR_NAME}"
     image: "pinpointdocker/pinpoint-collector:${PINPOINT_VERSION}-metric"
     depends_on:
