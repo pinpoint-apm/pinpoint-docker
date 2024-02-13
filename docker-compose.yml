@@ -2,12 +2,6 @@ version: "3.6"
 
 services:
   pinpoint-hbase:
-    build:
-      context: ./pinpoint-hbase/
-      dockerfile: Dockerfile
-      args:
-        - PINPOINT_VERSION=${PINPOINT_VERSION}
-
     container_name: "${PINPOINT_HBASE_NAME}"
     image: "pinpointdocker/pinpoint-hbase:${PINPOINT_VERSION}"
     networks:
@@ -76,12 +70,6 @@ services:
       - pinpoint
 
   pinpoint-web:
-    build:
-      context: ./pinpoint-web/
-      dockerfile: Dockerfile
-      args:
-        - PINPOINT_VERSION=${PINPOINT_VERSION}
-
     container_name: "${PINPOINT_WEB_NAME}"
     image: "pinpointdocker/pinpoint-web:${PINPOINT_VERSION}"
 
@@ -126,12 +114,6 @@ services:
       - pinpoint
 
   pinpoint-collector:
-    build:
-      context: ./pinpoint-collector/
-      dockerfile: Dockerfile
-      args:
-        - PINPOINT_VERSION=${PINPOINT_VERSION}
-
     container_name: "${PINPOINT_COLLECTOR_NAME}"
     image: "pinpointdocker/pinpoint-collector:${PINPOINT_VERSION}"
 
@@ -190,12 +172,6 @@ services:
       - pinpoint-agent
 
   pinpoint-batch:
-    build:
-      context: ./pinpoint-batch/
-      dockerfile: Dockerfile
-      args:
-        - PINPOINT_VERSION=${PINPOINT_VERSION}
-
     container_name: "${PINPOINT_BATCH_NAME}"
     image: "pinpointdocker/pinpoint-batch:${PINPOINT_VERSION}"
     depends_on:
@@ -240,12 +216,6 @@ services:
       - pinpoint
 
   pinpoint-agent:
-    build:
-      context: ./pinpoint-agent/
-      dockerfile: Dockerfile
-      args:
-        - PINPOINT_VERSION=${PINPOINT_VERSION}
-
     container_name: "${PINPOINT_AGENT_NAME}"
     image: "pinpointdocker/pinpoint-agent:${PINPOINT_VERSION}"
     restart: unless-stopped
@@ -321,12 +291,6 @@ services:
 
   ##flink
   jobmanager:
-    build:
-      context: pinpoint-flink
-      dockerfile: Dockerfile
-      args:
-        - PINPOINT_VERSION=${PINPOINT_VERSION}
-
     container_name: "${PINPOINT_FLINK_NAME}-jobmanager"
     image: "pinpointdocker/pinpoint-flink:${PINPOINT_VERSION}"
     expose:
@@ -343,12 +307,6 @@ services:
       - zoo1
 
   taskmanager:
-    build:
-      context: pinpoint-flink
-      dockerfile: Dockerfile
-      args:
-        - PINPOINT_VERSION=${PINPOINT_VERSION}
-
     container_name: "${PINPOINT_FLINK_NAME}-taskmanager"
     image: "pinpointdocker/pinpoint-flink:${PINPOINT_VERSION}"
     expose:
