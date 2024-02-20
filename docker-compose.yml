@@ -46,7 +46,7 @@ services:
   pinpoint-mysql:
     container_name: pinpoint-mysql
     image: mysql:8.0
-    restart: no
+    restart: "no"
     hostname: pinpoint-mysql
     entrypoint: > 
       sh -c "
