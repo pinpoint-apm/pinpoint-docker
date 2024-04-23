@@ -12,6 +12,8 @@ Installing Pinpoint with these docker files will take approximately 10min. to ch
 It supports and helps you understand your application in a glance and allow you to build world-class, high-quality software.
 
 ## Supported Tags
+ - 2.5.4-metric (for web and collector)
+ - 2.5.4
  - 2.5.3-metric (for web and collector)
  - 2.5.3
  - 2.5.2-metric (for web and collector)
