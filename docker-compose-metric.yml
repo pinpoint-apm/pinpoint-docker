@@ -29,18 +29,18 @@ services:
       - JDBC_URL=${SPRING_DATASOURCE_HIKARI_JDBCURL}
       - JDBC_USERNAME=${SPRING_DATASOURCE_HIKARI_USERNAME}
       - JDBC_PASSWORD=${SPRING_DATASOURCE_HIKARI_PASSWORD}
-      - PINPOINT_PINOT_JDBC_URL=${SPRING_PINOTDATASOURCE_HIKARI_JDBCURL}
-      - PINPOINT_PINOT_JDBC_USERNAME=${SPRING_PINOTDATASOURCE_HIKARI_USERNAME}
-      - PINPOINT_PINOT_JDBC_PASSWORD=${SPRING_PINOTDATASOURCE_HIKARI_PASSWORD}
+      - PINPOINT_PINOT_JDBC_URL=${SPRING_PINOTDATASOURCE_PINOT_JDBCURL}
+      - PINPOINT_PINOT_JDBC_USERNAME=${SPRING_PINOTDATASOURCE_PINOT_USERNAME}
+      - PINPOINT_PINOT_JDBC_PASSWORD=${SPRING_PINOTDATASOURCE_PINOT_PASSWORD}
       - SPRING_DATASOURCE_HIKARI_JDBCURL=${SPRING_DATASOURCE_HIKARI_JDBCURL}
       - SPRING_DATASOURCE_HIKARI_USERNAME=${SPRING_DATASOURCE_HIKARI_USERNAME}
       - SPRING_DATASOURCE_HIKARI_PASSWORD=${SPRING_DATASOURCE_HIKARI_PASSWORD}
       - SPRING_METADATASOURCE_HIKARI_JDBCURL=${SPRING_METADATASOURCE_HIKARI_JDBCURL}
       - SPRING_METADATASOURCE_HIKARI_USERNAME=${SPRING_METADATASOURCE_HIKARI_USERNAME}
       - SPRING_METADATASOURCE_HIKARI_PASSWORD=${SPRING_METADATASOURCE_HIKARI_PASSWORD}
-      - SPRING_PINOTDATASOURCE_HIKARI_JDBCURL=${SPRING_PINOTDATASOURCE_HIKARI_JDBCURL}
-      - SPRING_PINOTDATASOURCE_HIKARI_USERNAME=${SPRING_PINOTDATASOURCE_HIKARI_USERNAME}
-      - SPRING_PINOTDATASOURCE_HIKARI_PASSWORD=${SPRING_PINOTDATASOURCE_HIKARI_PASSWORD}
+      - SPRING_PINOTDATASOURCE_PINOT_JDBCURL=${SPRING_PINOTDATASOURCE_PINOT_JDBCURL}
+      - SPRING_PINOTDATASOURCE_PINOT_USERNAME=${SPRING_PINOTDATASOURCE_PINOT_USERNAME}
+      - SPRING_PINOTDATASOURCE_PINOT_PASSWORD=${SPRING_PINOTDATASOURCE_PINOT_PASSWORD}
       - SPRING_DATA_REDIS_HOST=${SPRING_DATA_REDIS_HOST}
       - SPRING_DATA_REDIS_PORT=${SPRING_DATA_REDIS_PORT}
       - SPRING_DATA_REDIS_USERNAME=${SPRING_DATA_REDIS_USERNAME}
@@ -88,12 +88,12 @@ services:
       - LOGGING_LEVEL_ROOT=${COLLECTOR_LOGGING_LEVEL_ROOT}
       - FLINK_CLUSTER_ENABLE=${FLINK_CLUSTER_ENABLE}
       - FLINK_CLUSTER_ZOOKEEPER_ADDRESS=${FLINK_CLUSTER_ZOOKEEPER_ADDRESS}
-      - PINPOINT_PINOT_JDBC_URL=${SPRING_PINOTDATASOURCE_HIKARI_JDBCURL}
-      - PINPOINT_PINOT_JDBC_USERNAME=${SPRING_PINOTDATASOURCE_HIKARI_USERNAME}
-      - PINPOINT_PINOT_JDBC_PASSWORD=${SPRING_PINOTDATASOURCE_HIKARI_PASSWORD}
-      - SPRING_PINOTDATASOURCE_HIKARI_JDBCURL=${SPRING_PINOTDATASOURCE_HIKARI_JDBCURL}
-      - SPRING_PINOTDATASOURCE_HIKARI_USERNAME=${SPRING_PINOTDATASOURCE_HIKARI_USERNAME}
-      - SPRING_PINOTDATASOURCE_HIKARI_PASSWORD=${SPRING_PINOTDATASOURCE_HIKARI_PASSWORD}
+      - PINPOINT_PINOT_JDBC_URL=${SPRING_PINOTDATASOURCE_PINOT_JDBCURL}
+      - PINPOINT_PINOT_JDBC_USERNAME=${SPRING_PINOTDATASOURCE_PINOT_USERNAME}
+      - PINPOINT_PINOT_JDBC_PASSWORD=${SPRING_PINOTDATASOURCE_PINOT_PASSWORD}
+      - SPRING_PINOTDATASOURCE_PINOT_JDBCURL=${SPRING_PINOTDATASOURCE_PINOT_JDBCURL}
+      - SPRING_PINOTDATASOURCE_PINOT_USERNAME=${SPRING_PINOTDATASOURCE_PINOT_USERNAME}
+      - SPRING_PINOTDATASOURCE_PINOT_PASSWORD=${SPRING_PINOTDATASOURCE_PINOT_PASSWORD}
       - PINPOINT_METRIC_KAFKA_BOOTSTRAP_SERVERS=${PINPOINT_METRIC_KAFKA_BOOTSTRAP_SERVERS}
       - SPRING_DATA_REDIS_HOST=${SPRING_DATA_REDIS_HOST}
       - SPRING_DATA_REDIS_PORT=${SPRING_DATA_REDIS_PORT}
@@ -125,7 +125,10 @@ services:
       sh -c "/opt/kafka/bin/kafka-topics.sh --create --topic url-stat --bootstrap-server pinpoint-kafka:9092 &&
       /opt/kafka/bin/kafka-topics.sh --create --topic system-metric-data-type --bootstrap-server pinpoint-kafka:9092 &&
       /opt/kafka/bin/kafka-topics.sh --create --topic system-metric-tag --bootstrap-server pinpoint-kafka:9092 &&
-      /opt/kafka/bin/kafka-topics.sh --create --topic system-metric-double --bootstrap-server pinpoint-kafka:9092"
+      /opt/kafka/bin/kafka-topics.sh --create --topic system-metric-double --bootstrap-server pinpoint-kafka:9092 &&
+      /opt/kafka/bin/kafka-topics.sh --create --topic exception-trace --bootstrap-server pinpoint-kafka:9092 &&
+      /opt/kafka/bin/kafka-topics.sh --create --topic inspector-stat-app --bootstrap-server pinpoint-kafka:9092
+      "
     networks:
       - pinpoint
 
@@ -175,6 +178,7 @@ services:
       sh -c "
       curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/${PINPOINT_VERSION}/uristat/uristat-common/src/main/pinot/pinot-uriStat-realtime-table.json > uriStatTable.json &&
       curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/${PINPOINT_VERSION}/uristat/uristat-common/src/main/pinot/pinot-uriStat-schema.json > uriStatSchema.json &&
+
       curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/${PINPOINT_VERSION}/metric-module/metric/src/main/pinot/pinot-tag-realtime-table.json > tagTable.json &&
       curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/${PINPOINT_VERSION}/metric-module/metric/src/main/pinot/pinot-tag-schema.json > tagSchema.json &&
       curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/${PINPOINT_VERSION}/metric-module/metric/src/main/pinot/pinot-double-realtime-table.json > doubleTable.json &&
@@ -182,13 +186,25 @@ services:
       curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/${PINPOINT_VERSION}/metric-module/metric/src/main/pinot/pinot-dataType-realtime-table.json > dataTypeTable.json &&
       curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/${PINPOINT_VERSION}/metric-module/metric/src/main/pinot/pinot-dataType-schema.json > dataTypeSchema.json &&
 
-      sed -i 's/localhost:19092/pinpoint-kafka:9092/g' uriStatTable.json tagTable.json doubleTable.json dataTypeTable.json &&
-      sed -i 's/.*replicasPerPartition.*/    \"replicasPerPartition\": \"1\",/g' uriStatTable.json tagTable.json doubleTable.json dataTypeTable.json &&
+      curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/master/exceptiontrace/exceptiontrace-common/src/main/pinot/pinot-exceptionTrace-offline-table.json > exceptionTraceTable.json &&
+      curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/${PINPOINT_VERSION}/exceptiontrace/exceptiontrace-common/src/main/pinot/pinot-exceptionTrace-schema.json > exceptionTraceSchema.json &&
+
+      curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/${PINPOINT_VERSION}/inspector-module/inspector-collector/src/main/pinot/pinot-inspector-stat-agent-realtime-table.json > inspectorAgentTable.json &&
+      curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/${PINPOINT_VERSION}/inspector-module/inspector-collector/src/main/pinot/pinot-inspector-stat-agent-schema.json > inspectorAgentSchema.json &&
+      curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/${PINPOINT_VERSION}/inspector-module/inspector-collector/src/main/pinot/pinot-inspector-stat-application-realtime-table.json > inspectorApplicationTable.json &&
+      curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/${PINPOINT_VERSION}/inspector-module/inspector-collector/src/main/pinot/pinot-inspector-stat-application-schema.json > inspectorApplicationSchema.json &&
+
+      sed -i 's/localhost:19092/pinpoint-kafka:9092/g' uriStatTable.json tagTable.json doubleTable.json dataTypeTable.json exceptionTraceTable.json inspectorAgentTable.json inspectorApplicationTable.json &&
+      sed -i 's/.*replicasPerPartition.*/    \"replicasPerPartition\": \"1\",/g' uriStatTable.json tagTable.json doubleTable.json dataTypeTable.json exceptionTraceTable.json inspectorAgentTable.json inspectorApplicationTable.json &&
 
       /opt/pinot/bin/pinot-admin.sh AddTable -schemaFile uriStatSchema.json -realtimeTableConfigFile uriStatTable.json -controllerHost pinot-controller -controllerPort 9000 -exec &&
       /opt/pinot/bin/pinot-admin.sh AddTable -schemaFile tagSchema.json -realtimeTableConfigFile tagTable.json -controllerHost pinot-controller -controllerPort 9000 -exec &&
       /opt/pinot/bin/pinot-admin.sh AddTable -schemaFile doubleSchema.json -realtimeTableConfigFile doubleTable.json -controllerHost pinot-controller -controllerPort 9000 -exec &&
-      /opt/pinot/bin/pinot-admin.sh AddTable -schemaFile dataTypeSchema.json -realtimeTableConfigFile dataTypeTable.json -controllerHost pinot-controller -controllerPort 9000 -exec"
+      /opt/pinot/bin/pinot-admin.sh AddTable -schemaFile dataTypeSchema.json -realtimeTableConfigFile dataTypeTable.json -controllerHost pinot-controller -controllerPort 9000 -exec &&
+      /opt/pinot/bin/pinot-admin.sh AddTable -schemaFile exceptionTraceSchema.json -realtimeTableConfigFile exceptionTraceTable.json -controllerHost pinot-controller -controllerPort 9000 -exec &&
+      /opt/pinot/bin/pinot-admin.sh AddTable -schemaFile inspectorAgentSchema.json -realtimeTableConfigFile inspectorAgentTable.json -controllerHost pinot-controller -controllerPort 9000 -exec &&
+      /opt/pinot/bin/pinot-admin.sh AddTable -schemaFile inspectorApplicationSchema.json -realtimeTableConfigFile inspectorApplicationTable.json -controllerHost pinot-controller -controllerPort 9000 -exec
+      "
     depends_on:
       - pinot-server-0
       - pinpoint-kafka-init
