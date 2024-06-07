@@ -11,41 +11,6 @@ Installing Pinpoint with these docker files will take approximately 10min. to ch
 [Pinpoint](https://github.com/pinpoint-apm/pinpoint), is the world's leading open-source application monitoring solution - trusted by millions of users around the globe.
 It supports and helps you understand your application in a glance and allow you to build world-class, high-quality software.
 
-## Supported Tags
- - 2.5.3-metric (for web and collector)
- - 2.5.3
- - 2.5.2-metric (for web and collector)
- - 2.5.2
- - 2.5.1-metric (for web and collector)
- - 2.5.1
- - 2.5.0
- - 2.4.2
- - 2.4.1
- - 2.4.0
- - 2.3.3
- - 2.3.2
- - 2.3.1
- - 2.3.0
- - 2.2.2
- - 2.2.1
- - 2.2.0
- - 2.1.2
- - 2.1.0
- - 2.0.4
- - 2.0.3
- - 2.0.2
- - 2.0.1
-   - Default transport module has changed from THRIFT to gRPC
-   - Spring profiler added (check [homepage](https://pinpoint-apm.github.io/pinpoint/2.0.1/installation.html#profiles) for more info)
- - 1.8.5 
- - 1.8.4
- - 1.8.3
- - 1.8.2
- - 1.8.1
- - 1.8.0
- - 1.7.3
- - 1.7.2
-
 ## Requirements
 
 - [docker 18.02.0+](https://docs.docker.com/compose/compose-file/)
