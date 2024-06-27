@@ -105,33 +105,36 @@ services:
       - SPRING_DATA_REDIS_PASSWORD=${SPRING_DATA_REDIS_PASSWORD}
 
   pinpoint-kafka:
-    image: ubuntu/kafka:3.1-22.04_beta
+    image: bitnami/kafka:3.3.2-debian-12-r26
     restart: unless-stopped
     hostname: pinpoint-kafka
-    command: /etc/kafka/server.properties --override advertised.listeners=PLAINTEXT://pinpoint-kafka:9092
     depends_on:
       - pinot-zoo
     expose:
       - "9092"
     environment:
-      - ZOOKEEPER_HOST=pinot-zoo
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=pinot-zoo:2181
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://pinpoint-kafka:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://pinpoint-kafka:9092
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
     networks:
       - pinpoint
     volumes:
-      - pinot-kafka-volume:/var/lib/kafka/data
+      - pinot-kafka-volume:/bitnami/kafka
 
   pinpoint-kafka-init:
-    image: ubuntu/kafka:3.1-22.04_beta
+    image: bitnami/kafka:3.3.2-debian-12-r26
     restart: "no"
     depends_on:
       - pinpoint-kafka
     entrypoint: >
-      sh -c "/opt/kafka/bin/kafka-topics.sh --create --topic url-stat --bootstrap-server pinpoint-kafka:9092 &&
-      /opt/kafka/bin/kafka-topics.sh --create --topic system-metric-data-type --bootstrap-server pinpoint-kafka:9092 &&
-      /opt/kafka/bin/kafka-topics.sh --create --topic system-metric-tag --bootstrap-server pinpoint-kafka:9092 &&
-      /opt/kafka/bin/kafka-topics.sh --create --topic system-metric-double --bootstrap-server pinpoint-kafka:9092 &&
-      /opt/kafka/bin/kafka-topics.sh --create --topic exception-trace --bootstrap-server pinpoint-kafka:9092 &&
-      /opt/kafka/bin/kafka-topics.sh --create --topic inspector-stat-app --bootstrap-server pinpoint-kafka:9092
+      sh -c "/opt/bitnami/kafka/bin/kafka-topics.sh --create --topic url-stat --bootstrap-server pinpoint-kafka:9092 &&
+      /opt/bitnami/kafka/bin/kafka-topics.sh --create --topic system-metric-data-type --bootstrap-server pinpoint-kafka:9092 &&
+      /opt/bitnami/kafka/bin/kafka-topics.sh --create --topic system-metric-tag --bootstrap-server pinpoint-kafka:9092 &&
+      /opt/bitnami/kafka/bin/kafka-topics.sh --create --topic system-metric-double --bootstrap-server pinpoint-kafka:9092 &&
+      /opt/bitnami/kafka/bin/kafka-topics.sh --create --topic exception-trace --bootstrap-server pinpoint-kafka:9092 &&
+      /opt/bitnami/kafka/bin/kafka-topics.sh --create --topic inspector-stat-app --bootstrap-server pinpoint-kafka:9092
       "
     networks:
       - pinpoint
