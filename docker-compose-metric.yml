@@ -190,7 +190,7 @@ services:
       curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/${PINPOINT_VERSION}/metric-module/metric/src/main/pinot/pinot-dataType-realtime-table.json > dataTypeTable.json &&
       curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/${PINPOINT_VERSION}/metric-module/metric/src/main/pinot/pinot-dataType-schema.json > dataTypeSchema.json &&
 
-      curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/master/exceptiontrace/exceptiontrace-common/src/main/pinot/pinot-exceptionTrace-offline-table.json > exceptionTraceTable.json &&
+      curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/${PINPOINT_VERSION}/exceptiontrace/exceptiontrace-common/src/main/pinot/pinot-exceptionTrace-offline-table.json > exceptionTraceTable.json &&
       curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/${PINPOINT_VERSION}/exceptiontrace/exceptiontrace-common/src/main/pinot/pinot-exceptionTrace-schema.json > exceptionTraceSchema.json &&
 
       curl https://raw.githubusercontent.com/pinpoint-apm/pinpoint/${PINPOINT_VERSION}/inspector-module/inspector-collector/src/main/pinot/pinot-inspector-stat-agent-realtime-table.json > inspectorAgentTable.json &&
