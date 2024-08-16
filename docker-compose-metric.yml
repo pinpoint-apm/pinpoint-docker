@@ -201,13 +201,13 @@ services:
       sed -i 's/localhost:19092/pinpoint-kafka:9092/g' uriStatTable.json tagTable.json doubleTable.json dataTypeTable.json exceptionTraceTable.json inspectorAgentTable.json inspectorApplicationTable.json &&
       sed -i 's/.*replicasPerPartition.*/    \"replicasPerPartition\": \"1\",/g' uriStatTable.json tagTable.json doubleTable.json dataTypeTable.json exceptionTraceTable.json inspectorAgentTable.json inspectorApplicationTable.json &&
 
-      /opt/pinot/bin/pinot-admin.sh AddTable -schemaFile uriStatSchema.json -realtimeTableConfigFile uriStatTable.json -controllerHost pinot-controller -controllerPort 9000 -exec &&
-      /opt/pinot/bin/pinot-admin.sh AddTable -schemaFile tagSchema.json -realtimeTableConfigFile tagTable.json -controllerHost pinot-controller -controllerPort 9000 -exec &&
-      /opt/pinot/bin/pinot-admin.sh AddTable -schemaFile doubleSchema.json -realtimeTableConfigFile doubleTable.json -controllerHost pinot-controller -controllerPort 9000 -exec &&
-      /opt/pinot/bin/pinot-admin.sh AddTable -schemaFile dataTypeSchema.json -realtimeTableConfigFile dataTypeTable.json -controllerHost pinot-controller -controllerPort 9000 -exec &&
-      /opt/pinot/bin/pinot-admin.sh AddTable -schemaFile exceptionTraceSchema.json -realtimeTableConfigFile exceptionTraceTable.json -controllerHost pinot-controller -controllerPort 9000 -exec &&
-      /opt/pinot/bin/pinot-admin.sh AddTable -schemaFile inspectorAgentSchema.json -realtimeTableConfigFile inspectorAgentTable.json -controllerHost pinot-controller -controllerPort 9000 -exec &&
-      /opt/pinot/bin/pinot-admin.sh AddTable -schemaFile inspectorApplicationSchema.json -realtimeTableConfigFile inspectorApplicationTable.json -controllerHost pinot-controller -controllerPort 9000 -exec
+      /opt/pinot/bin/pinot-admin.sh AddTable -schemaFile uriStatSchema.json -tableConfigFile uriStatTable.json -controllerHost pinot-controller -controllerPort 9000 -exec &&
+      /opt/pinot/bin/pinot-admin.sh AddTable -schemaFile tagSchema.json -tableConfigFile tagTable.json -controllerHost pinot-controller -controllerPort 9000 -exec &&
+      /opt/pinot/bin/pinot-admin.sh AddTable -schemaFile doubleSchema.json -tableConfigFile doubleTable.json -controllerHost pinot-controller -controllerPort 9000 -exec &&
+      /opt/pinot/bin/pinot-admin.sh AddTable -schemaFile dataTypeSchema.json -tableConfigFile dataTypeTable.json -controllerHost pinot-controller -controllerPort 9000 -exec &&
+      /opt/pinot/bin/pinot-admin.sh AddTable -schemaFile exceptionTraceSchema.json -tableConfigFile exceptionTraceTable.json -controllerHost pinot-controller -controllerPort 9000 -exec &&
+      /opt/pinot/bin/pinot-admin.sh AddTable -schemaFile inspectorAgentSchema.json -tableConfigFile inspectorAgentTable.json -controllerHost pinot-controller -controllerPort 9000 -exec &&
+      /opt/pinot/bin/pinot-admin.sh AddTable -schemaFile inspectorApplicationSchema.json -tableConfigFile inspectorApplicationTable.json -controllerHost pinot-controller -controllerPort 9000 -exec
       "
     depends_on:
       - pinot-server-0
