@@ -126,12 +126,13 @@ services:
     depends_on:
       - pinpoint-kafka
     entrypoint: >
-      sh -c "/opt/kafka/bin/kafka-topics.sh --create --topic url-stat --bootstrap-server pinpoint-kafka:9092 &&
+      sh -c "/opt/kafka/bin/kafka-topics.sh --create --topic url-stat --partitions 64 --bootstrap-server pinpoint-kafka:9092 &&
       /opt/kafka/bin/kafka-topics.sh --create --topic system-metric-data-type --bootstrap-server pinpoint-kafka:9092 &&
       /opt/kafka/bin/kafka-topics.sh --create --topic system-metric-tag --bootstrap-server pinpoint-kafka:9092 &&
       /opt/kafka/bin/kafka-topics.sh --create --topic system-metric-double --bootstrap-server pinpoint-kafka:9092 &&
       /opt/kafka/bin/kafka-topics.sh --create --topic exception-trace --bootstrap-server pinpoint-kafka:9092 &&
-      /opt/kafka/bin/kafka-topics.sh --create --topic inspector-stat-app --bootstrap-server pinpoint-kafka:9092
+      /opt/kafka/bin/kafka-topics.sh --create --topic inspector-stat-app --partitions 64 --bootstrap-server pinpoint-kafka:9092 &&
+      /opt/kafka/bin/kafka-topics.sh --create --topic inspector-stat-agent-00 --partitions 32 --bootstrap-server pinpoint-kafka:9092 
       "
     networks:
       - pinpoint
