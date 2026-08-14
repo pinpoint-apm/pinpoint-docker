@@ -1,6 +1,16 @@
 
 ![Pinpoint](https://github.com/pinpoint-apm/pinpoint-docker/blob/master/docs/logo.png)
 
+ > [!WARNING]
+  > **This repository is no longer maintained and has been archived.**
+  > Please use [pinpoint-apm/pinpoint-kubernetes](https://github.com/pinpoint-apm/pinpoint-kubernetes) instead.
+  > If you previously ran Pinpoint with the `docker-compose.yml` in this repo,
+  > **rotate your `web.security.auth.jwt.secretkey`** — the value committed here is public
+  > and can be used to forge authentication tokens.
+  >
+  > The content below is kept for reference only.
+
+
 # Pinpoint-Docker for Pinpoint
 
 Official git repository of Dockerized components of the [Pinpoint Application Monitoring](https://github.com/pinpoint-apm/pinpoint).  
