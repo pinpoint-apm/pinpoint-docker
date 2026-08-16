@@ -43,7 +43,7 @@ services:
 
   pinpoint-mysql:
     container_name: pinpoint-mysql
-    image: mysql:8.0
+    image: mysql:8.0.37-oraclelinux8
     restart: "no"
     hostname: pinpoint-mysql
     entrypoint: > 
