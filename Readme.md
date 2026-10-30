@@ -7,6 +7,8 @@
   > If you previously ran Pinpoint with the `docker-compose.yml` in this repo,
   > **rotate your `web.security.auth.jwt.secretkey`** — the value committed here is public
   > and can be used to forge authentication tokens.
+  > Also **change `ADMIN_PASSWORD`** — the value `admin` committed here is public
+  > and unlocks the admin API that removes applications and agents.
   >
   > The content below is kept for reference only.
 
